@@ -1,0 +1,60 @@
+<html lang="en" ng-app="imsapp" >
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" href="">
+        <!-- Angular Material style sheet -->
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
+        <link rel="stylesheet" href="assets/css/myapp.css">
+    </head>
+    <body  ng-cloak ng-controller="homeCtrl" >
+
+        <div>
+            
+            <!-- views will be injected here -->
+            <div ui-view></div>
+            
+
+        </div>
+
+        <!-- Angular Material requires Angular.js Libraries -->
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-cookies.js"></script>    
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-route.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
+        <!-- Angular Material Library --> 
+        <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
+
+        <script src="libjs/app.js"></script>
+        <script src="libjs/routeprovider.js"></script>
+
+        <script src="customjs/service/AuthenticationService.js"></script>
+        <script src="customjs/service/initService.js"></script>
+        <script src="customjs/service/DealerService.js"></script>
+        <script src="customjs/service/SupplierService.js"></script>
+        <script src="customjs/service/AuthorizerService.js"></script>
+        <script src="customjs/service/menu.js"></script>
+        
+        
+        <script src="customjs/directive/menu-link-directive.js"></script>
+        <script src="customjs/directive/menu-toggle-directive.js"></script>
+        
+        <script src="customjs/controller/loginCtrl.js"></script>
+        <script src="customjs/controller/homeCtrl.js"></script>
+        <script src="customjs/controller/menuCtrl.js"></script>
+        <script src="customjs/controller/dealerCtrl.js"></script>
+        <script src="customjs/controller/supplierCtrl.js"></script>
+        <script src="customjs/controller/authorizerCtrl.js"></script>
+        <script src="customjs/controller/manageproductCtrl.js"></script>
+        
+    </body>
+</html>
+
+<!--
+Copyright 2016 Google Inc. All Rights Reserved. 
+Use of this source code is governed by an MIT-style license that can be in foundin the LICENSE file at http://material.angularjs.org/license.
+-->

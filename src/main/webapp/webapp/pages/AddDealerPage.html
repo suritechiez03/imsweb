@@ -1,0 +1,125 @@
+<div ng-controller="dealerCtrl" data-ng-init="init();">
+    <md-content>
+        <md-tabs md-dynamic-height md-border-bottom md-selected="selectedIndex"> 
+            <md-tab id="tab1" label="Dealer" ng-click="getDealerNo();">
+                <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch>
+                    <md-card-title-text>
+
+                        <md-toolbar class="md-theme-light">
+                            <h2 class="md-toolbar-tools">
+                                <span>New Dealer Details</span>
+
+                            </h2>
+                        </md-toolbar>
+
+                        <md-content class="md-padding">
+
+                            <form name="addDealerForm" novalidate>
+                                <div layout-gt-xs="row">
+                                    <md-input-container class="md-block" flex-gt-xs>
+                                        <label> Dealers Number </label>
+                                        <input type="text" ng-model="Dealer.dealerNumber" disabled>
+                                    </md-input-container>
+                                </div>
+                                <div layout-gt-sm="row">
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label>Company Name :</label>
+                                        <input name="companyName" ng-model="Dealer.companyName" required>
+                                    </md-input-container>
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label>Company Website Addres :</label>
+                                        <input ng-model="Dealer.companyWebsite" required>
+                                    </md-input-container>
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label>Company Email ID : </label>
+                                        <input md-maxlength="30" ng-model="Dealer.companyEmail" required>
+                                    </md-input-container>
+                                </div>
+                                <div layout-gt-sm="row">
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label>Tin Number :</label>
+                                        <input ng-model="Dealer.tinNumber" required>
+                                    </md-input-container>
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label>CST Number :</label>
+                                        <input ng-model="Dealer.cstNumber" required>
+                                    </md-input-container>
+
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label>PAN Number :</label>
+                                        <input ng-model="Dealer.panNumber" required>
+                                    </md-input-container>
+                                </div>
+                                <div layout-gt-sm="row">
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label>Vat and Comodity Certificate :</label>
+                                        <!--<input type="file" ng-model="Dealer.CompanyPANNumber" disabled>-->
+                                    </md-input-container>
+                                </div>
+                                <div layout-gt-sm="row">
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label>Address :</label>
+                                        <input ng-model="Dealer.comapanyAddress" md-maxlength="250" required>
+                                    </md-input-container>
+                                </div>
+                                <div layout-gt-sm="row">
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label>Office Number :</label>
+                                        <input ng-model="Dealer.offlicePhNumber" required>
+                                    </md-input-container>
+                                </div>
+
+                            </form>
+
+                        </md-content>
+                    </md-card-title-text>
+                    <md-card-actions layout="row" layout-align="end center">
+                        <md-button  class="md-raised md-primary" ng-click="SaveOrUpdate();"
+                                    ng-disabled="addDealerForm.$dirty && addDealerForm.$invalid"> {{SAVE_UPDATE_DELETE_FLAG}} </md-button>
+                    </md-card-actions>
+                </md-card>
+
+            </md-tab>
+            <md-tab id="tab2" label="Dealer List" ng-click="getDealerList()">
+                <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch>
+                    <md-card-title-text>
+                        <md-toolbar class="md-theme-light">
+                            <h4 class="md-toolbar-tools">
+                                <span>Dealer Details</span>
+                                <span flex></span>
+                                <md-input-container class="md-toolbar-tools" flex-gt-sm >
+                                    <input ng-model="dealersearchtext">
+                                </md-input-container>
+                            </h4>
+
+
+                        </md-toolbar>
+                        <md-content class="md-padding">
+                            <div ng-repeat="item in Dealerslist| filter : dealersearchtext" ng-click="null">
+                                <!--<img ng-src="{{item.face}}?{{$index}}" class="md-avatar" alt="{{item.who}}" />-->
+
+                                <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch ng-disabled="{{item.status?true:false}}">
+                                    <md-card-title>
+                                        <md-card-title-text>
+                                            <span class="md-headline">Dealer Number : {{ item.dealerNumber}}</span>
+                                            <span class="md-subhead"> Company Name : {{ item.companyName}}</span>
+                                            <span class="md-subhead"> Company Website : {{item.companyWebsite}}</span>
+                                        </md-card-title-text>
+                                    </md-card-title>
+                                    <md-card-actions layout="row" layout-align="end center">
+                                        <!--                                        <md-switch class="md-primary" md-no-ink aria-label="Switch No Ink" >
+                                                                                    De-activate
+                                                                                </md-switch>-->
+
+                                        <md-button md-no-ink class="md-primary" ng-click="editDealerInfo(item)"> Edit</md-button>
+                                    </md-card-actions>
+                                </md-card>
+                            </div>
+
+                        </md-content>
+                    </md-card-title-text></md-card>
+            </md-tab>
+
+        </md-tabs>
+    </md-content>
+</div>

@@ -1,0 +1,59 @@
+<div ng-controller="homeCtrl" layout="column" style="height:600px" ng-cloak>
+    <md-toolbar class="md-hue-2" md-whiteframe="4">
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" aria-label="Menu Button" hide-gt-md ng-click="openLeftMenu();">
+                <md-icon md-svg-icon="../webapp/assets/img/menu.f1d75e5f.svg" aria-label="Menu Icon"> </md-icon> 
+            </md-button> 
+            <h2>
+                <span>{{AppTitle}}</span>
+            </h2>
+            <span flex></span>
+
+            <md-button class="md-raised" aria-label="Menu Icon" ng-click="logOut();">{{UserName}}</md-button>
+        </div>
+    </md-toolbar>
+    <section layout="row" flex>
+
+        <md-sidenav
+            class="md-sidenav-left"
+            md-component-id="left"
+            md-is-locked-open="$mdMedia('gt-md')"
+            md-whiteframe="4">
+
+            <md-toolbar class="md-theme-indigo">
+                <h1 class="md-toolbar-tools">Sidenav Left</h1>
+            </md-toolbar>
+            <md-content layout-padding ng-controller="LeftCtrl">
+
+                <div ng-controller="menuCtrl">
+
+                    <md-list style="height:1px">
+                        <md-list-item class="md--line" ng-repeat="item in Menu">
+                            <!--<img ng-src="{{item.face}}" alt="{{item.who}}" class="md-avatar">-->
+                            <div class="md-list-item-text">
+                                <md-button md-no-ink class="md-primary" ui-sref="{{item.Link}}">{{item.MenuItem}}</md-button>
+
+                            </div>
+                            <md-divider inset></md-divider>
+                        </md-list-item>
+                    </md-list>
+
+                </div>
+
+            </md-content>
+
+        </md-sidenav>
+        <md-content flex>
+
+<!--            <div layout="column" layout-align="top center">-->
+                <div ui-view flex></div> 
+            <!--</div>-->
+
+            
+
+        </md-content>
+
+
+    </section>
+
+</div>

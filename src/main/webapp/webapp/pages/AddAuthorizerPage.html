@@ -1,0 +1,162 @@
+<div ng-controller="authorizerCtrl" data-ng-init="init();" flex>
+    <md-content flex>
+        <md-tabs md-dynamic-height md-border-bottom md-selected="selectedIndex"> 
+            <md-tab id="tab1" label="Authorizer" ng-click="getAuthorizerNo();">
+                <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch>
+                    <md-card-title-text>
+
+                        <md-toolbar class="md-theme-light">
+                            <h2 class="md-toolbar-tools">
+                                <span>New Authorizer Details</span>
+
+                            </h2>
+                        </md-toolbar>
+
+                        <md-content class="md-padding" flex>
+
+                            <form name="addAuthorizerForm" novalidate>
+                                <div layout-gt-xs="row">
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label>Authorizer For : </label>
+                                        <md-select ng-model="Authorizer.authorizerFor" ng-change="listsupplierordealer();" >
+                                            <md-option ng-repeat="option in AuthorizerForOption" value="{{option.abbrev}}">
+                                                {{option.abbrev}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label>{{Authorizer.authorizerFor=="Dealer"?"Dealer Number":"Supplier Number"}} </label>
+
+                                        <md-select ng-model="Authorizer.dealerorsupplierno">
+                                            <md-option ng-repeat="option in DealerSupplierlist" value="{{option.supplierdealerno}}">
+                                                <span style="color: blue">{{option.supplierdealerno}} : {{option.companyName}}</span>
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </div>
+                                <div layout-gt-xs="row">
+                                    <md-input-container class="md-block" flex-gt-xs>
+                                        <label> Authorizer Number </label>
+                                        <input type="text" ng-model="Authorizer.authorizerId" disabled>
+                                    </md-input-container>
+                                </div>
+                                <div layout-gt-sm="row">
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label>Authorizer Name :</label>
+                                        <input name="authrizername" ng-model="Authorizer.authorizername" required>
+                                    </md-input-container>
+                                </div>
+                                <div layout-gt-sm="row">
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label>Phone No :</label>
+                                        <input ng-model="Authorizer.phoneno" required>
+                                    </md-input-container>
+                                </div>
+                                <div layout-gt-sm="row">
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label>Email ID : </label>
+                                        <input md-maxlength="30" ng-model="Authorizer.emailid" required>
+                                    </md-input-container>
+                                </div>
+                                <div layout-gt-sm="row">
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label>PAN Number :</label>
+                                        <input ng-model="Authorizer.pannumber" required>
+                                    </md-input-container>
+                                </div>
+
+                                <div layout-gt-sm="row">
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label>Additional Info :</label>
+                                        <input ng-model="Authorizer.otherDetails" md-maxlength="250" required>
+                                    </md-input-container>
+                                </div>
+
+
+                            </form>
+
+                        </md-content>
+                    </md-card-title-text> 
+                    <md-card-actions layout="row" layout-align="end center">
+                        <md-button  class="md-raised md-primary" ng-click="SaveOrUpdate();"
+                                    ng-disabled="addAuthorizerForm.$dirty && addAuthorizerForm.$invalid"> {{SAVE_UPDATE_DELETE_FLAG}} </md-button>
+                    </md-card-actions>
+                </md-card>
+
+            </md-tab>
+            <md-tab id="tab2" label="Dealer Authorizer List" ng-click="getDealerAuthorizerList()">
+<!--                <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch >
+                    <md-card-title-text>-->
+                        <md-toolbar class="md-theme-light">
+                            <h4 class="md-toolbar-tools">
+                                <span>Authorizer Details</span>
+                                <span flex></span>
+                                <md-input-container class="md-toolbar-tools" flex-gt-sm >
+                                    <input ng-model="authorizersearchtext">
+                                </md-input-container>
+                            </h4>
+
+
+                        </md-toolbar>
+                        <md-content class="md-padding">
+                            <div ng-repeat="item in Authorizerslist | filter : authorizersearchtext" ng-click="null">
+                                <!--<img ng-src="{{item.face}}?{{$index}}" class="md-avatar" alt="{{item.who}}" />-->
+
+                                <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch ng-disabled="{{item.status?true:false}}">
+                                    <md-card-title>
+                                        <md-card-title-text>
+                                            <span class="md-headline">Authorizer Number : {{ item.authorizerId}}</span>
+                                            <span class="md-subhead"> Name : {{ item.authorizername}}</span>
+                                            <span class="md-subhead"> Phone No : {{item.phoneno}}</span>
+                                            <span class="md-subhead"> {{Authorizer.authorizerFor=="Dealer"?"Dealer Number":"Supplier Number"}} : {{item.dealerorsupplierno}}</span>
+                                        </md-card-title-text>
+                                    </md-card-title>
+                                    <md-card-actions layout="row" layout-align="end center">
+                                        <md-button md-no-ink class="md-primary" ng-click="editAuthorizerInfo(item)"> Edit</md-button>
+                                    </md-card-actions>
+                                </md-card>
+                            </div>
+
+                        </md-content>
+                    <!--</md-card-title-text></md-card>-->
+            </md-tab>
+            <md-tab id="tab3" label="Supplier Authorizer List" ng-click="getSupplierAuthorizerList()">
+                <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch >
+                    <md-card-title-text>
+                        <md-toolbar class="md-theme-light">
+                            <h4 class="md-toolbar-tools">
+                                <span>Supplier Authorizer Details</span>
+                                <span flex></span>
+                                <md-input-container class="md-toolbar-tools" flex-gt-sm >
+                                    <input ng-model="authorizersearchtext">
+                                </md-input-container>
+                            </h4>
+
+
+                        </md-toolbar>
+                        <md-content class="md-padding">
+                            <div ng-repeat="item in Authorizerslist | filter : authorizersearchtext" ng-click="null">
+                                <!--<img ng-src="{{item.face}}?{{$index}}" class="md-avatar" alt="{{item.who}}" />-->
+
+                                <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch ng-disabled="{{item.status?true:false}}">
+                                    <md-card-title>
+                                        <md-card-title-text>
+                                            <span class="md-headline">Authorizer Number : {{ item.authorizerId}}</span>
+                                            <span class="md-subhead"> Name : {{ item.authorizername}}</span>
+                                            <span class="md-subhead"> Phone No : {{item.phoneno}}</span>
+                                            <span class="md-subhead"> {{Authorizer.authorizerFor=="Dealer"?"Dealer Number":"Supplier Number"}} : {{item.dealerorsupplierno}}</span>
+                                        </md-card-title-text>
+                                    </md-card-title>
+                                    <md-card-actions layout="row" layout-align="end center">
+                                        <md-button md-no-ink class="md-primary" ng-click="editAuthorizerInfo(item)"> Edit</md-button>
+                                    </md-card-actions>
+                                </md-card>
+                            </div>
+
+                        </md-content>
+                    </md-card-title-text></md-card>
+            </md-tab> 
+
+        </md-tabs>
+    </md-content>
+</div>

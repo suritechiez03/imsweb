@@ -1,0 +1,39 @@
+<div ng-controller="manageproductCtrl" data-ng-init="" flex>
+    <md-content flex>
+        <md-tabs md-dynamic-height md-border-bottom md-selected="selectedIndex"> 
+            <md-tab id="tab1" label="Product Caetrgory">
+                <md-toolbar class="md-theme-light">
+                    <h3 class="md-toolbar-tools">
+                        <span> Add Product Category</span>
+                    </h3>
+                </md-toolbar>
+                <md-content class="md-padding" flex>
+                    <form name="addProductCategory">
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label> Product Category Code : </label>
+                                <input type="text" ng-model="ProductCategory.productcategorycode" md-maxlength="30" required ng-pattern="/^[PC-][A-Z][a-z][0-9]*$/">
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label> Category Name : </label>
+                                <input type="text" ng-model="ProductCategory.productcategoryname" md-maxlength="50" required>
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label> Additional Info : </label>
+                                <input type="text" ng-model="ProductCategory.productcategoryaddinfo" md-maxlength="255">
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                        <md-button  class="md-raised md-primary" ng-click="SaveOrUpdate();"
+                                    ng-disabled="addProductCategory.$dirty && addProductCategory.$invalid"> {{SAVE_UPDATE_DELETE_FLAG}} </md-button>
+                        </div>
+                    </form>
+                </md-content>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>
