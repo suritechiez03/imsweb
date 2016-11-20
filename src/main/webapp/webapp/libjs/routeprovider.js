@@ -31,9 +31,14 @@ imsappctrl.config(function ($stateProvider, $urlRouterProvider) {
                 templateUrl: 'pages/AddAuthorizerPage.html',
                 controller: 'homeCtrl'
             })
-             .state('home.manageproduct', {
+            .state('home.manageproduct', {
                 url: '/manageproduct',
                 templateUrl: 'pages/ManageProduct.html',
+                controller: 'homeCtrl'
+            })
+            .state('home.manageorder', {
+                url: '/manageorder',
+                templateUrl: 'pages/ManageOrders.html',
                 controller: 'homeCtrl'
             });
     // nested states 
@@ -55,8 +60,10 @@ imsappctrl.config(function ($stateProvider, $urlRouterProvider) {
 //                controller: 'homeCtrl'
 //            })
     $urlRouterProvider.otherwise('/');
+    
 
 });
+
 //phpro.controller('mainCtrl', function($scope) {
 //        // create a message to display in our view
 ////        $scope.heading = 'Welcome to PHPRO.ORG';

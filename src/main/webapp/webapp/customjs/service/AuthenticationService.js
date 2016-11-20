@@ -56,6 +56,9 @@ imsappctrl.factory('AuthenticationService',
                      ----------------------------------------------*/
                     $http.post('/IMSWEB/logout', {headers: {'Content-Type': 'application/json; charset=UTF-8'}})
                             .success(function () {
+                               $cookieStore.remove('AppTitle');
+                               $cookieStore.remove('AppDescription');
+                               $cookieStore.remove('UserName');
                                $console.log("logging out");
                                 
                             })

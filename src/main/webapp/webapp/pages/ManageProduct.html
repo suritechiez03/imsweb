@@ -12,7 +12,7 @@
                         <div layout-gt-xs="row">
                             <md-input-container class="md-block" flex-gt-xs>
                                 <label> Product Category Code : </label>
-                                <input type="text" ng-model="ProductCategory.productcategorycode" md-maxlength="30" required ng-pattern="/^[PC-][A-Z][a-z][0-9]*$/">
+                                <input type="text" ng-model="ProductCategory.productcategorycode" md-maxlength="7" required ng-pattern="/^PC[A-Za-z0-9]{5}$/">
                             </md-input-container>
                         </div>
                         <div layout-gt-xs="row">
@@ -28,8 +28,69 @@
                             </md-input-container>
                         </div>
                         <div layout-gt-xs="row">
-                        <md-button  class="md-raised md-primary" ng-click="SaveOrUpdate();"
-                                    ng-disabled="addProductCategory.$dirty && addProductCategory.$invalid"> {{SAVE_UPDATE_DELETE_FLAG}} </md-button>
+                            <md-button  class="md-raised md-primary" ng-click="SaveOrUpdateProductCategory();"
+                                        ng-disabled="addProductCategory.$dirty && addProductCategory.$invalid"> {{SAVE_UPDATE_DELETE_FLAG}} </md-button>
+                        </div>
+                    </form>
+                </md-content>
+            </md-tab>
+            <md-tab id="tab1" label="Products" ng-click="listproductcategory();">
+                <md-toolbar class="md-theme-light">
+                    <h3 class="md-toolbar-tools">
+                        <span> Add Product </span>
+                    </h3>
+                </md-toolbar>
+                <md-content class="md-padding" flex>
+                    <form name="addProduct" novalidate>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label> Product Code : </label>
+                                <input type="text" ng-model="Product.productcode" md-maxlength="7" required ng-pattern="/^[A-Za-z0-9]{5}$/">
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>Product Category : </label>
+                                <md-select ng-model="Product.productcategorycode" required>
+                                    <md-option ng-repeat="option in ProductCategoryList" value="{{option.productcategorycode}}">
+                                        <span style="color: blue">{{option.productcategorycode}} : {{option.productcategoryname}}</span>
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label> Product Name : </label>
+                                <input type="text" ng-model="Product.productname" md-maxlength="50" required>
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label> Specification And Thickness : </label>
+                                <input type="text" ng-model="Product.specificationandthickness" md-maxlength="45">
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label> Size : </label>
+                                <input type="text" ng-model="Product.size" md-maxlength="45">
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label> Units : </label>
+                                <input type="text" ng-model="Product.units" md-maxlength="45">
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label> MOQ : </label>
+                                <input type="text" ng-model="Product.moq" md-maxlength="45">
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label> Color : </label>
+                                <input type="text" ng-model="Product.color" md-maxlength="45">
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-button  class="md-raised md-primary" ng-click="SaveOrUpdateProduct();"
+                                        ng-disabled="addProduct.$dirty && addProduct.$invalid"> {{SAVE_UPDATE_DELETE_FLAG}} </md-button>
                         </div>
                     </form>
                 </md-content>

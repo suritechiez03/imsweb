@@ -7,8 +7,8 @@
 
 //angular.module('imsapp', ['ngMaterial'])
 imsappctrl.controller('loginCtrl',
-        ['$scope', '$rootScope', '$location','$window','$sessionStorage', 'AuthenticationService', 'initService',
-            function ($scope, $rootScope, $location,$window,$sessionStorage, AuthenticationService, initService) {
+        ['$scope', '$rootScope', '$location', '$window', '$sessionStorage', '$cookieStore', 'AuthenticationService', 'initService',
+            function ($scope, $rootScope, $location, $window, $sessionStorage, $cookieStore, AuthenticationService, initService) {
                 // reset login status
                 AuthenticationService.ClearCredentials();
                 initService.callme();
@@ -22,7 +22,8 @@ imsappctrl.controller('loginCtrl',
                                 AuthenticationService.SetCredentials($scope.username, $scope.password);
                                 console.log(response);
                                 $location.path(response.loginparam); //log in to main page
-                                $rootScope.UserName = response.UserName;
+                                $cookieStore.put('UserName',response.UserName);
+                                $rootScope.UserName = $cookieStore.get('UserName');
 
                             } else {
                                 $scope.error = response.message;
@@ -41,9 +42,11 @@ imsappctrl.controller('loginCtrl',
                         console.log("i am here");
                         console.log(response[0].appKey);
 //                $scope.AppTitle=response[0].appKey;
-                        $rootScope.AppTitle = response[0].appKey;
-                        $rootScope.AppDescription = response[1].appKey;
-                        $sessionStorage.AppTitle=response[0].appKey;
+                        $cookieStore.put('AppTitle', response[0].appKey);
+                        $cookieStore.put('AppDescription', response[1].appKey);
+                        $rootScope.AppTitle = $cookieStore.get('AppTitle');
+                        $rootScope.AppDescription =$cookieStore.get('AppDescription'); ;
+                        $sessionStorage.AppTitle = response[0].appKey;
                         console.log($sessionStorage.AppTitle);
                         //      $rootscope.AppTitle=response[0].appKey;
                     });
@@ -53,6 +56,6 @@ imsappctrl.controller('loginCtrl',
                     // and fire search in case its value is not empty
                     getAppSettings();
                 };
-                
+
 
             }]);

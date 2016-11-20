@@ -36,7 +36,12 @@
     </bean>
     <bean id="ImsSuppliersauthorizerDAO" class="org.ims.dao.entitydao.ImsSuppliersauthorizerDAO">
     </bean>
-      
+    <bean id="ImsProductcategoryDAO" class="org.ims.dao.entitydao.ImsProductcategoryDAO">
+    </bean>
+    <bean id="ImsProductdetailsDAO" class="org.ims.dao.entitydao.ImsProductdetailsDAO">
+    </bean>
+    <bean id="ImsImsManageordersDAO" class="org.ims.dao.entitydao.ImsManageordersDAO">
+    </bean>
       
     <bean id="Appsettings" class="org.ims.transactionEngine.securityManager.Appsettings">
     </bean>
@@ -47,6 +52,12 @@
     <bean id="SupplierAuthorizerService" class="org.ims.transactionEngine.SupplierService.SupplierAuthorizerService">
     </bean>
     <bean id="DealerAuthorizerService" class="org.ims.transactionEngine.DealerService.DealerAuthorizerService">
+    </bean>
+    <bean id="ProductCategoryService" class="org.ims.transactionEngine.InventoryService.ProductCategoryService">
+    </bean>
+    <bean id="ProductService" class="org.ims.transactionEngine.InventoryService.ProductService">
+    </bean>
+    <bean id="OrderManagementService" class="org.ims.transactionEngine.InventoryService.OrderManagementService">
     </bean>
     <bean id="LoginService" class="org.ims.transactionEngine.securityManager.Loginservice">
     </bean>

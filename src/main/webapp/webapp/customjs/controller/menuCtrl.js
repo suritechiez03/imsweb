@@ -32,6 +32,11 @@ imsappctrl.controller('menuCtrl', function ($scope) {
         MenuItem: "Manage Products",
         Link: "home.manageproduct"
     });
+     $scope.Menu.push({
+//      face: imagePath,
+        MenuItem: "Manage Order",
+        Link: "home.manageorder"
+    });
 //    }
 });
 

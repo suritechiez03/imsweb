@@ -5,3 +5,11 @@
  */
 
 
+imsappctrl.directive('customSelectHeader', function() {
+  return {
+    scope: {},
+    restrict: 'E',
+    templateUrl: 'custom-header.tmpl.html'
+  }
+})
+   

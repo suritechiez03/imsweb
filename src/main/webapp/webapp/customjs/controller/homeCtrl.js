@@ -67,6 +67,7 @@ imsappctrl.controller('homeCtrl', ['$scope', '$rootScope', '$location', '$http',
             $mdDialog.show(confirm).then(function () {
                 //$scope.status = 'You decided to get rid of your debt.';
                 AuthenticationService.LogOut();
+                
                 $location.path("index");
 
             }, function () {
