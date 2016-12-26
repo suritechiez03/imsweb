@@ -1,6 +1,6 @@
 // create the module and name it phpro
 // also include ngRoute for all our routing needs
-var imsappctrl = angular.module('imsapp', ['ui.router', 'ngMaterial', 'ngMessages', 'ngCookies', 'ngStorage']);
+var imsappctrl = angular.module('imsapp', ['ui.router', 'ngMaterial', 'ngMessages', 'ngCookies', 'ngStorage','md.data.table']);
 imsappctrl.run(['$templateCache', function ($templateCache) {
         $templateCache.removeAll();
     }]);

@@ -40,33 +40,14 @@ imsappctrl.config(function ($stateProvider, $urlRouterProvider) {
                 url: '/manageorder',
                 templateUrl: 'pages/ManageOrders.html',
                 controller: 'homeCtrl'
+            })
+            .state('home.manageinvoice', {
+                url: '/manageinvoice',
+                templateUrl: 'pages/ManageInvoice.html',
+                controller: 'homeCtrl'
             });
-    // nested states 
-    // each of these sections will have their own view
-    // url will be nested (/form/profile)
-//            .state('form.profile', {
-//                url: '/profile',
-//                templateUrl: 'form-profile.html'
-//            })
-//            // route for the index page
-////        .when('/', {
-////                templateUrl : 'pages/login.html',
-////                controller  : 'loginCtrl'
-////        })
-//
-//            // route for the FAQ page
-//            .when('/home', {
-//                templateUrl: 'pages/home.html',
-//                controller: 'homeCtrl'
-//            })
+
     $urlRouterProvider.otherwise('/');
     
 
 });
-
-//phpro.controller('mainCtrl', function($scope) {
-//        // create a message to display in our view
-////        $scope.heading = 'Welcome to PHPRO.ORG';
-////        $scope.message = 'Here you will find the meaning of life.';
-//});
-       

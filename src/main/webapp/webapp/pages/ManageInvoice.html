@@ -1,0 +1,307 @@
+<div ng-controller="manageInvoicesCtrl" ng-init="initInvoiceFrm();">
+    <md-content>
+        <!--        <md-toolbar class="md-theme-light">
+                    <h3 class="md-toolbar-tools">
+                        <span> Invoice </span>
+                    </h3>
+                </md-toolbar>-->
+        <md-content class="md-padding" flex>
+            <form name="frmInvoice">
+                <md-tabs md-dynamic-height md-border-bottom md-selected="selectedIndex"> 
+                    <md-tab id="tab1" label="Invoice" ng-click="">
+
+                        <md-card flex style="padding-left: 10">
+
+
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>Invoice For : </label>
+                                <md-select ng-model="ManageInvoice.InvoiceFor" ng-change="listsupplierordealer();" required>
+                                    <md-option ng-repeat="option in InvoiceForOption" value="{{option.abbrev}}">
+                                        {{option.abbrev}}
+                                    </md-option>
+                                </md-select> 
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>{{ManageInvoice.InvoiceFor=="Dealer"?"Dealer Number":"Supplier Number"}} </label>
+                                <md-select ng-model="ManageInvoice.DealerOrSupplier" ng-change="loadOrders();" required>
+                                    <md-option ng-repeat="option in DealerSupplierlist" ng-value="option">
+                                        <span style="color: blue">{{option.supplierdealerno}} : {{option.companyName}}</span>
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                            <b>{{ManageInvoice.DealerOrSupplier.comapanyAddress}}</b>
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>  Invoice type : </label>
+                                <md-select ng-model="ManageInvoice.InvoiceType" ng-change="loadOrders();" required>
+                                    <md-option ng-repeat="option in InvoiceTypeOption" value="{{option.abbrev}}">
+                                        {{option.abbrev}}
+                                    </md-option>
+                                </md-select> 
+                            </md-input-container>
+                            <div ng-show="ManageInvoice.InvoiceTypeFlag">
+                                <md-input-container class="md-block" flex-gt-sm >
+                                    <label>  Order No : </label>
+                                    <md-select ng-model="ManageInvoice.SelectedOrder"  required>
+                                        <md-option ng-repeat="option in orderlist" ng-value="option">
+                                            <span style="color: blue">{{option.GeneratedOrderNo}} : {{option.dealerorsuppliername}}</span>
+                                        </md-option>
+                                    </md-select> 
+                                </md-input-container>
+                            </div>
+
+
+                            <md-card-actions layout="row" layout-align="end center">
+                                <md-button class="md-raised md-primary" ng-click="NextTab();">Next</md-button>
+                            </md-card-actions>
+                        </md-card>
+
+                    </md-tab>
+                    <md-tab id="tab2" ng-show="{{ManageInvoice.ShowInvoice}}" label="{{ManageInvoice.DealerOrSupplier.dealerorsupplierno + ManageInvoice.DealerOrSupplier.comapanyAddress}}" ng-click="">
+                        <div layout-gt-xs="row">
+                            <md-card flex>
+
+                                <div style="padding-left: 10">
+
+                                    <h1 style="alignment-adjust: central">{{ManageInvoice.InvoiceFor=="Dealer"?"Sales Invoice ":" Purchase Invoice";}}</h1>
+                                    <div flex-gt-xs>
+                                        <label> <b>Invoice Date : </b></label>
+                                        <md-datepicker ng-model="ManageInvoice.Invoicedate" md-placeholder="Enter date" valid required></md-datepicker>
+                                    </div>
+                                    <div flex-gt-xs>
+                                        <md-input-container>
+                                            <label> <b> Invoice No# : </b></label>
+                                            <input ng-model="ManageInvoice.InvoiceNo"
+                                                   placeholder="InvoiceNo"
+                                                   text="Invoice No#:"
+                                                   required> 
+                                        </md-input-container>
+                                    </div>
+                                </div>
+
+                            </md-card>
+                        </div>
+                        <md-card flex>
+                            <div style="padding-left: 10">
+                                <div layout-gt-xs="row">
+
+                                    <div flex-gt-xs>
+                                        <label>Payment Due Date :</label>
+                                        <md-datepicker ng-model="ManageInvoice.PaymentDueDt" md-placeholder="Enter date" valid required></md-datepicker>
+                                    </div>
+
+                                    <div flex-gt-xs>
+                                        <label>Expected Delivery Date :</label>
+                                        <md-datepicker ng-model="ManageInvoice.ExpectedDeliveryDate" md-placeholder="Enter date" valid required></md-datepicker>
+                                    </div>
+
+                                </div>
+                                <div layout-gt-xs="row">
+                                    <md-input-container>
+                                        <input ng-model="ManageInvoice.RepName"
+                                               placeholder="Rep Name">
+                                    </md-input-container>     
+                                    <md-input-container>
+                                        <input ng-model="ManageInvoice.PaymentTerms"
+                                               placeholder="Payment Terms">
+                                    </md-input-container> 
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label> Freight Terms </label>
+                                        <md-select ng-model="ManageInvoice.FreightTerms" required>
+                                            <md-option ng-repeat="option in FrieghtTerms" value="{{option.gdCode}}">
+                                                <span style="color: blue">{{option.gdName}} </span>
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                    <md-input-container>
+                                        <input ng-model="ManageInvoice.DeliveryTerms"
+                                               placeholder="Delivery Terms">
+                                    </md-input-container> 
+                                </div>
+                                <div layout-gt-xs="row">
+                                    <md-input-container>
+                                        <input ng-model="ManageInvoice.Transporter"
+                                               placeholder="Transporter">
+                                    </md-input-container> 
+                                    <md-input-container>
+                                        <input ng-model="ManageInvoice.TransporterMode"
+                                               placeholder="Transporter Mode">
+                                    </md-input-container> 
+                                    <md-input-container>
+                                        <input ng-model="ManageInvoice.ESugamaNo"
+                                               placeholder="E-SugamaNo">
+                                    </md-input-container> 
+                                    <md-input-container>
+                                        <input ng-model="ManageInvoice.Destination"
+                                               placeholder="Destination">
+                                    </md-input-container> 
+                                </div>
+                                <div layout-gt-xs="row">
+                                    <md-input-container>
+                                        <input ng-model="ManageInvoice.NoOfPacks"
+                                               placeholder="No of Packs">
+                                    </md-input-container> 
+                                    <md-input-container>
+                                        <input ng-model="ManageInvoice.Grossweight"
+                                               placeholder="Gross Weight">
+                                    </md-input-container> 
+                                </div>
+                            </div>
+                        </md-card>
+                        <md-card>
+                            <md-card-title>
+                                <div layout-gt-xs="row" ng-show="ManageInvoice.ShowAddProduct" >
+
+                                    <md-input-container >
+                                        <label>Products</label>
+                                        <md-select ng-model="SelectedProduct"
+                                                   data-md-container-class="selectdemoSelectHeader"
+                                                   >
+                                            <md-optgroup label="products">
+                                                <md-option ng-value="product" ng-repeat="product in productlist| filter:searchTerm ">{{product.productname}}</md-option>
+                                            </md-optgroup>
+                                        </md-select>
+                                    </md-input-container>
+                                    <md-input-container >
+                                        <div>
+                                            <input ng-model="orderQuantity"
+                                                   type="number"
+                                                   placeholder="Quantity"
+                                                   step="1"
+                                                   required> </div>
+                                    </md-input-container>
+                                    <md-input-container >
+                                        <div>
+                                            <md-button  class="md-raised md-primary"   
+                                                        ng-click="AddtoCart(SelectedProduct, orderQuantity);"
+                                                        ng-disabled="orderQuantity <= '0'"
+                                                        > Add</md-button>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                            </md-card-title>
+                            <div layout-gt-xs="row" >
+                                <md-card flex>
+                                    <md-table-container>
+                                        <table md-table md-row-select  ng-model="selected">
+                                            <thead md-head>
+                                                <tr md-row>
+                                                    <th></th>
+                                                    <th md-column md-order-by="nameToLower">Product Code</th>
+                                                    <th md-column md-numeric>Product Name</th>
+                                                    <th md-column md-numeric>Units</th>
+                                                    <th md-column md-numeric>Available Qty</th>
+                                                    <th md-column md-numeric>Quantity</th>   
+                                                    <th md-column md-numeric>Unit Price</th>   
+                                                    <th md-column md-numeric>Discount %</th>  
+                                                    <th md-column md-numeric>VAT %</th>  
+                                                    <th md-column md-numeric>Total Price</th> 
+                                                    <th md-column md-numeric>Margin %</th> 
+                                                    <th md-column md-numeric>Margin Amt</th> 
+                                                    <th md-column md-numeric>Dealer Price</th> 
+
+                                                </tr>
+                                            </thead> 
+                                            <tbody md-body>
+                                                <tr md-row ng-repeat="item in selectedproductlist">
+                                                    <td md-cell><md-button class="md-primary" ng-click="Remove($index)"> Remove </md-button></td>
+                                            <td md-cell>{{item.productcode}}</td>
+                                            <td md-cell>{{item.productname}}</td>
+                                            <td md-cell>{{item.units}}</td>
+                                            <td md-cell></td>
+                                            <td md-cell>{{item.orderQuantity}}</td>
+                                            <td md-cell><input ng-model="selectedproductlist[$index].UnitPrice" type="number"  step="0.01" ng-change="updateTotal(item);"></td>
+                                            <td md-cell><input ng-model="selectedproductlist[$index].Discount" type="number"  step="0.1"  ng-change="updateTotal(item);"></td>
+                                            <td md-cell><input ng-model="selectedproductlist[$index].VAT" type="number"  step="0.01"     ng-change="updateTotal(item);"></td>
+                                            <td md-cell><b>{{item.TotalPrice}}</b> </td>
+                                            <td md-cell><input ng-model="selectedproductlist[$index].MarginPrecnt" type="number"  step="0.01"  ng-change="updateTotal(item);"></td>
+                                            <td md-cell><b>{{item.MarginAmt}}</b></td>
+                                            <td md-cell><b>{{item.DealerPrice}}</b></td>
+
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </md-table-container>
+                                </md-card>
+                            </div>
+                        </md-card>
+                        <md-card>
+                            <md-card-title>
+                                <md-table-container>
+                                    <table md-table>
+                                        <tbody md-body>
+                                            <tr md-row>
+                                                <td md-cell>Frieght and Forwarding Charges :</td>
+                                                <td md-cell><span flex></span></td>
+                                                <td md-cell></td>
+                                                <td md-cell> <input ng-model="ManageInvoice.FAFcharges" type="number" string-to-number  step="0.01"  ng-change="CalcuateCharges();" > 
+                                                </td>
+                                            </tr>
+                                            <tr md-row>
+                                                <td md-cell>Gross Amount :</td>
+                                                <td md-cell><span flex></span></td>
+                                                <td md-cell></td>
+                                                <td md-cell> <input ng-model="ManageInvoice.GrossAmount" type="number"  string-to-number step="0.01" value="0" readonly > 
+                                                </td>
+                                            </tr>
+                                            <tr md-row>
+                                                <td md-cell>Excise Duty @  </td>
+                                                <td md-cell><span flex><input ng-model="ManageInvoice.excessPercentage" type="number"  string-to-number step="0.01" ng-change="CalcuateCharges();"></span></td>
+                                                <td md-cell> <label>Excise Rate :</label> </td>
+                                                <td md-cell> <input ng-model="ManageInvoice.excessRate" type="number" string-to-number  step="0.01" value="0" readonly > 
+                                                </td>
+                                            </tr>
+                                            <tr md-row>
+                                                <td md-cell>Education Cess @ </td>
+                                                <td md-cell><span flex><input ng-model="ManageInvoice.educationCessPercentage" type="number" string-to-number  step="0.01" ng-change="CalcuateCharges();"></span></td>
+                                                <td md-cell> <label>Education Cess Rate :</label> </td>
+                                                <td md-cell><input ng-model="ManageInvoice.educationCessRate"type="number" string-to-number  step="0.01" value="0" readonly></td>
+                                            </tr>
+                                            <tr md-row>
+                                                <td md-cell>Sec. Education Cess @ </td>
+                                                <td md-cell><span flex><input ng-model="ManageInvoice.secondaryEducationCessPercentage" type="number"  string-to-number step="0.01" ng-change="CalcuateCharges();" ></span></td>
+                                                <td md-cell> <label>Sec. Education Cess Rate :</label> </td>
+                                                <td md-cell><input ng-model="ManageInvoice.secondaryEducationCessRate" type="number"  string-to-number step="0.01" value="0" readonly></td>
+                                            </tr>
+                                            <tr md-row>
+                                                <td md-cell>CST Percentage @ </td>
+                                                <td md-cell><span flex><input ng-model="ManageInvoice.CSTPercentage" type="number" string-to-number  step="0.01" ng-change="CalcuateCharges();"  ></span></td>
+                                                <td md-cell> <label>CST Rate :</label> </td>
+                                                <td md-cell><input ng-model="ManageInvoice.CSTRate" type="number" string-to-number  step="0.01" value="0" readonly ></td>
+                                            </tr>
+                                            <tr md-row>
+                                                <td md-cell>VAT  @ </td>
+                                                <td md-cell><span flex><input ng-model="ManageInvoice.VAT1" type="number"  string-to-number step="0.01" ng-change="CalcuateCharges();"  ></span></td>
+                                                <td md-cell> <label> %</label> </td>
+                                                <td md-cell><input ng-model="ManageInvoice.Vat1Rate" type="number" string-to-number  step="0.01" readonly></td>
+                                            </tr>
+                                            <tr md-row ng-show="false">
+                                                <td md-cell>VAT @ </td>
+                                                <td md-cell><span flex><input ng-model="ManageInvoice.VAT2" type="number" string-to-number  step="0.01" ng-change="CalcuateCharges();" ></span></td>
+                                                <td md-cell> <label>%</label> </td>
+                                                <td md-cell><input ng-model="ManageInvoice.Vat2Rate" type="number"  string-to-number step="0.01" readonly></td>
+                                            </tr>
+                                            <tr md-row>
+                                                <td md-cell>Round Off : </td>
+                                                <td md-cell><span flex></span></td>
+                                                <td md-cell> <label></label></td>
+                                                <td md-cell><input ng-model="ManageInvoice.RoundOff" type="number" string-to-number step="0.01" ng-change="CalcuateCharges();" ></td>
+                                            </tr>
+                                            <tr md-row>
+                                                <td md-cell><h2>Total Amount  :</h2> </td>
+                                                <td md-cell><span flex></span></td>
+                                                <td md-cell> <label></label></td>
+                                                <td md-cell><h2 style="color: brown"> <span id="currency-default">{{ManageInvoice.FinalAmount| currency:"&#8377;"}}</span></h2></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </md-table-container>
+                            </md-card-title>
+                            <md-card-actions layout="row" layout-align="end center">
+                                <md-button class="md-raised md-primary" ng-click="SubmitInvoice();">Confirm</md-button>
+                            </md-card-actions>
+                        </md-card>
+                    </md-tab></md-tabs>
+            </form>
+        </md-content>
+    </md-content>
+</div>

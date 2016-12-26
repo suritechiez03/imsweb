@@ -42,6 +42,10 @@
     </bean>
     <bean id="ImsImsManageordersDAO" class="org.ims.dao.entitydao.ImsManageordersDAO">
     </bean>
+    <bean id="ImsGenraldefinitionDAO" class="org.ims.dao.entitydao.ImsGenraldefinitionDAO">
+    </bean>
+    <bean id="ImsTaxslabDAO" class="org.ims.dao.entitydao.ImsTaxslabDAO">
+    </bean>
       
     <bean id="Appsettings" class="org.ims.transactionEngine.securityManager.Appsettings">
     </bean>
@@ -62,5 +66,7 @@
     <bean id="LoginService" class="org.ims.transactionEngine.securityManager.Loginservice">
     </bean>
     <bean id="LoginModel" class="org.ims.transactionEngine.model.LoginModel">
+    </bean>
+    <bean id="MiscService" class="org.ims.transactionEngine.securityManager.MiscService">
     </bean>
 </beans>

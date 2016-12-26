@@ -12,12 +12,30 @@ imsappctrl.factory('ManageOrderService',
                 var service = {};
                 service.takeOrder = function (orderDetails, callback) {
                     $http.post('/IMSWEB/takeOrder', orderDetails, {headers: {'Content-Type': 'application/json; charset=UTF-8'}})
-                            .success(function (response) {
+                            .success(function (response,orderno) {
                                 console.log("New Order added successfully...........................");
-                                callback("OK");
+                                callback("OK",response);
                             })
                             .error(function (response) {
                                 console.log("New Order  added unsuccessfully...........................");
+                                callback("FAILED" + response);
+                            });
+                };
+                service.getOrders=function(callback){
+                    $http.get('/IMSWEB/getOrderList', {headers: {'Content-Type': 'application/json; charset=UTF-8'}})
+                            .success(function (response) {
+                                callback(response);
+                            })
+                            .error(function (response) {
+                                callback("FAILED" + response);
+                            });
+                };
+                service.getOrderListRaisedBy=function(data,callback){
+                    $http.post('/IMSWEB/getOrderListRaisedBy',data, {headers: {'Content-Type': 'application/json; charset=UTF-8'}})
+                            .success(function (response) {
+                                callback(response);
+                            })
+                            .error(function (response) {
                                 callback("FAILED" + response);
                             });
                 };

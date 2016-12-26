@@ -1,7 +1,7 @@
-<div ng-controller="manageOrdersCtrl">
+<div ng-controller="manageOrdersCtrl" ng-init="loadProducts();">
     <md-content>
         <md-tabs md-dynamic-height md-border-bottom md-selected="selectedIndex"> 
-            <md-tab id="tab1" label="Take Order">
+            <md-tab id="tab1" label="Take Order" ng-click="">
                 <md-toolbar class="md-theme-light">
                     <h3 class="md-toolbar-tools">
                         <span> Enter Order Details </span>
@@ -22,10 +22,8 @@
                                     <md-option ng-repeat="option in OrderForOption" value="{{option.abbrev}}">
                                         {{option.abbrev}}
                                     </md-option>
-                                </md-select>
+                                </md-select> 
                             </md-input-container>
-                        </div>
-                        <div layout-gt-xs="row">
                             <md-input-container class="md-block" flex-gt-sm>
                                 <label>{{ManageOrder.OrderFor=="Dealer"?"Dealer Number":"Supplier Number"}} </label>
                                 <md-select ng-model="ManageOrder.dealerorsupplierno" required>
@@ -36,88 +34,145 @@
                             </md-input-container>
                         </div>
                         <div layout-gt-xs="row">
-                            <md-button  class="md-raised md-primary" ng-click="next(selectedIndex);"
-                                        ng-disabled="takeOrder.$dirty && takeOrder.$invalid"> Next >> </md-button>
+
                         </div>
+                        <!--<md-content class="md-padding" flex>-->
+                        <div layout-gt-xs="row" >
+                            <!--                        <label>{{ManageOrder.OrderFor=="Dealer"?"Dealer Number":"Supplier Number"}} : {{ManageOrder.dealerorsupplierno.companyname}}</label>
+                                                    <md-input-container>
+                                                        <input ng-model="searchTerm"
+                                                               type="search"
+                                                               placeholder="Search for a product.."
+                                                               > 
+                                                    </md-input-container>-->
+                            <md-input-container>
+                                <label>Products</label>
+                                <md-select ng-model="SelectedProduct"
+                                           data-md-container-class="selectdemoSelectHeader"
+                                           >
+                                    <md-optgroup label="products">
+                                        <md-option ng-value="product" ng-repeat="product in productlist| filter:searchTerm ">{{product.productname}}</md-option>
+                                    </md-optgroup>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container >
+                                <div>
+                                    <input ng-model="orderQuantity"
+                                           type="number"
+                                           placeholder="Quantity"
+                                           step="1"
+                                           required> </div>
+                            </md-input-container>
+                            <md-input-container >
+                                <div>
+                                    <md-button  class="md-raised md-primary"   
+                                                ng-click="AddtoCart(SelectedProduct, orderQuantity);"
+                                                ng-disabled="orderQuantity <= '0'"
+                                                > Add</md-button>
+                                </div>
+                            </md-input-container>
+                        </div>
+
+                        <div layout-gt-xs="row" >
+                            <md-card flex>
+                                <md-table-container>
+                                    <table md-table md-row-select multiple ng-model="selected">
+                                        <thead md-head>
+                                            <tr md-row>
+                                                <th></th>
+                                                <th md-column md-order-by="nameToLower">Product Code</th>
+                                                <th md-column md-numeric>Product Name</th>
+                                                <th md-column md-numeric>Units</th>
+                                                <th md-column md-numeric>Quantity</th>   
+                                            </tr>
+                                        </thead> 
+                                        <tbody md-body>
+                                            <tr md-row ng-repeat="item in selectedproductlist">
+                                                <td md-cell><md-button class="md-primary" ng-click="Remove($index)"> Remove </md-button></td>
+                                        <td md-cell>{{item.productcode}}</td>
+                                        <td md-cell>{{item.productname}}</td>
+                                        <td md-cell>{{item.units}}</td>
+                                        <td md-cell>{{item.orderQuantity}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </md-table-container>
+                            </md-card>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-button  class="md-raised md-primary" ng-click="saveOrder();"
+                                        > Save Order </md-button>
+                            <md-button  class="md-raised md-primary" ng-click="gotoInvoice();"
+                                        > Proced for invoice </md-button>
+                        </div>
+                        <!--</md-content>-->
 
                     </form>
                 </md-content>
             </md-tab>
-            <md-tab id="tab2" label="Add Products" ng-disabled="ManageOrder.isTab2Enabled" ng-click="loadProducts();">
-                <md-content class="md-padding" flex>
-                    <div layout-gt-xs="row" >
-                        <label>{{ManageOrder.OrderFor=="Dealer"?"Dealer Number":"Supplier Number"}} : {{ManageOrder.dealerorsupplierno.companyname}}</label>
-                        <md-input-container>
-                            <input ng-model="searchTerm"
-                                   type="search"
-                                   placeholder="Search for a product.."
-                                   > 
-                        </md-input-container>
-                        <md-input-container>
-                            <label>Products</label>
-                            <md-select ng-model="SelectedProduct"
-                                       data-md-container-class="selectdemoSelectHeader"
-                                       >
-                                <md-optgroup label="products">
-                                    <md-option ng-value="product" ng-repeat="product in productlist| filter:searchTerm ">{{product.productname}}</md-option>
-                                </md-optgroup>
-                            </md-select>
-                        </md-input-container>
-                        <md-input-container >
-                            <div >
-                                <input ng-model="SelectedProduct.orderQuantity"
-                                       type="number"
-                                       placeholder="orderQuantity"
-                                       step="1"
-                                       required> </div>
-                        </md-input-container>
-                        <md-input-container >
-                            <div >
-                                <md-button  class="md-raised md-primary"   
-                                            ng-click="AddtoCart(SelectedProduct);"
-                                            required> Add</md-button>
-                            </div>
-                        </md-input-container>
-                    </div>
+            <md-tab id="tab2" label="View Orders" ng-disabled="ManageOrder.isTab2Enabled" ng-click="loadOrders();">
+                <md-card flex>
+                    <md-table-container>
+                        <table md-table md-row-select multiple ng-model="selected">
+                            <thead md-head  md-order="query.order">
+                                <tr md-row>
+                                    <th md-column></th>
+                                    <th md-column md-order-by="GeneratedOrderNo">Order Number</th>
+                                    <th md-column md-order-by="orderdate">Order Date</th>
+                                    <th md-column md-order-by="OrderFor">Order For</th>
+                                    <th md-column md-order-by="dealerorsupplierno">Supplier/Dealer</th>   
+                                </tr>
+                            </thead> 
+                            <tbody md-body>
+                                <tr ng-repeat-start="item in orderlist | filter: filter.search | orderBy: query.order">
+                                <tr md-row>
+                                    <td md-cell>
+                                        <button ng-if="item.expanded" ng-click="item.expanded = false">-</button>
+                                        <button ng-if="!item.expanded" ng-click="item.expanded = true">+</button>
+                                    </td>
+                                    <td md-cell>{{item.GeneratedOrderNo}}</td>
+                                    <td md-cell>{{item.orderdate| date:'dd-MMM-yyyy'}}</td>
+                                    <td md-cell>{{item.OrderFor}}</td>
+                                    <td md-cell>{{item.dealerorsupplierno}} : {{item.dealerorsuppliername}}</td>
+                                </tr>
+                                <!--<td md-cell><md-button class="md-primary" ng-click="viewproducts(item.products);">View Products</md-button></td>-->
+                            <td md-cell></td>
+                            <td colspan="4" md-cell ng-if="item.expanded" >
+                            <md-card flex>
+                                <md-table-container>
+                                    <table md-table>
+                                        <thead md-head>
+                                            <tr md-row>
+                                                <th md-column md-order-by="productcode">Product Code</th>
+                                                <th md-column md-order-by="nameToLower">Units</th>
+                                                <th md-column md-numeric>Order Quantity</th>
+                                                <th md-column md-numeric>Dispatched Quantity</th> 
+                                            </tr>
+                                        </thead> 
+                                        <tbody md-body>
+                                            <tr md-row ng-repeat="items in item.products">
+                                                <td md-cell>{{items.productcode}}:{{items.productname}}</td>
+                                                <td md-cell>{{items.units}}</td>
+                                                <td md-cell>{{items.orderQuantity}}</td>
+                                                <td md-cell>{{items.dispatchedQuantity}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </md-table-container>
 
-                    <div layout-gt-xs="row" >
-                        <table class="selectdemoSelectHeader">
-                            <tr>
-                                <th>Product Code
-                                </th>
-                                <th>Product Name
-                                </th>
-                                <th>Quantity
-                                </th>
-                            </tr>
-                            <tr ng-repeat="item in selectedproductlist track by $index">
-                                <td>{{item.productcode}}
                                 </td>
-                                <td>{{item.productname}}
-                                </td>
-                                <td>{{item.orderQuantity}}
-                                </td>
-                            </tr>
-                            
-                                                       
+                                </tr>
+                                <tr ng-repeat-end="">
+
+                                </tr>
+
+                                </tbody>
                         </table>
-                        
-                    </div>
-                    <div layout-gt-xs="row">
-                            <md-button  class="md-raised md-primary" ng-click="next(selectedIndex);"
-                                        ng-disabled="takeOrder.$dirty && takeOrder.$invalid"> Next >> </md-button>
-                    </div>
-                </md-content>
+                    </md-table-container>
+                </md-card>
             </md-tab>
-            <md-tab id="tab3" label="Review & Confirm">
-                <div layout-gt-xs="row">
-                            <md-button  class="md-raised md-primary" ng-click="saveOrder();"
-                                        > Save Order </md-button>
-                        </div>
-                <div layout-gt-xs="row">
-                            <md-button  class="md-raised md-primary" ng-click=""
-                                        > Proced for invoice </md-button>
-                        </div>
+            <md-tab id="tab3" label="Sales Invoice">
+
             </md-tab>
         </md-tabs>
     </md-content>

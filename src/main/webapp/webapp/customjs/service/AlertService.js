@@ -41,7 +41,7 @@ imsappctrl.factory('AlertService',
                             .textContent(content)
                             .ariaLabel('Alert Dialog Demo')
                             .ok(okButtontext)
-                            .targetEvent(ev)
+                            .targetEvent(null)
                             );
                 };
 

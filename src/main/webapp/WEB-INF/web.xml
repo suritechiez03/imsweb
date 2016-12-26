@@ -22,7 +22,7 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>webapp/index.html</welcome-file>
+        <welcome-file>/webapp/index.html</welcome-file>
     </welcome-file-list>
     <!-- CORS Filter -->
     <filter>

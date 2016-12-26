@@ -59,7 +59,7 @@ imsappctrl.factory('AuthenticationService',
                                $cookieStore.remove('AppTitle');
                                $cookieStore.remove('AppDescription');
                                $cookieStore.remove('UserName');
-                               $console.log("logging out");
+                               console.log("logging out");
                                 
                             })
                             .error(function (response) {

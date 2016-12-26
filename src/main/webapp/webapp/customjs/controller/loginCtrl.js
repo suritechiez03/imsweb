@@ -40,13 +40,13 @@ imsappctrl.controller('loginCtrl',
                     console.log("i am here");
                     initService.getAppsettings('', function (response) {
                         console.log("i am here");
-                        console.log(response[0].appKey);
+                        console.log(response[0].appValue);
 //                $scope.AppTitle=response[0].appKey;
-                        $cookieStore.put('AppTitle', response[0].appKey);
-                        $cookieStore.put('AppDescription', response[1].appKey);
+                        $cookieStore.put('AppTitle', response[0].appValue);
+                        $cookieStore.put('AppDescription', response[1].appValue);
                         $rootScope.AppTitle = $cookieStore.get('AppTitle');
                         $rootScope.AppDescription =$cookieStore.get('AppDescription'); ;
-                        $sessionStorage.AppTitle = response[0].appKey;
+                        $sessionStorage.AppTitle = response[0].appValue;
                         console.log($sessionStorage.AppTitle);
                         //      $rootscope.AppTitle=response[0].appKey;
                     });
