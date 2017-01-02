@@ -10,63 +10,180 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd 
        http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-    <!--bean id="propertyConfigurer"
+    <bean id="propertyConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
-          p:location="/WEB-INF/jdbc.properties" />
+          p:location="/WEB-INF/database.properties" />
 
-<bean id="dataSource"
-    class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-    p:driverClassName="${jdbc.driverClassName}"
-    p:url="${jdbc.url}"
-    p:username="${jdbc.username}"
-    p:password="${jdbc.password}" /-->
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+          p:driverClassName="${jdbc.driverClassName}"
+          p:url="${jdbc.url}"
+          p:username="${jdbc.username}"
+          p:password="${jdbc.password}"/>
+    
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+                <prop key="hibernate.connection.autocommit">true</prop>
+
+
+            </props>
+        </property>
+<!--        <property name="hibernateProperties">
+            <bean
+                class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+                <property name="propertiesArray">
+                    <list>
+                        
+                    </list>
+                </property>
+            </bean>
+        </property>-->
+        <property name="mappingLocations" value="classpath:org/ims/dao/entity/*.hbm.xml">
+        </property>
+            
+<!--
+        <mapping resource="org/ims/dao/entity/ImsEmployee.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsOptionrights.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsBanktransactions.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsManageorderdetails.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsPartnerdetails.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsManageorders.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsSalesproductdetails.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsStockdetails.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsPurchasemaster.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsPurchaseproductdetails.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsSuppliermaster.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsDealersauthorizer.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsBankaccountdetails.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsTransactiondetails.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsSuppliersauthorizer.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsProductdetails.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsOrderdetails.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsSalesmaster.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsAppsettings.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsProductcategory.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsLogindetails.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsTaxslab.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsGenraldefinition.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsGrouprights.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsInvoiceMaster.hbm.xml"/>
+        <mapping resource="org/ims/dao/entity/ImsDealermaster.hbm.xml"/>-->
+    </bean>
+    
+   <bean id="template" class="org.springframework.orm.hibernate4.HibernateTemplate">  
+        <property name="sessionFactory" ref="sessionFactory"></property>  
+        <property name="checkWriteOperations" value="false"></property>
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
     
     <!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->
-    <bean id="ImsLogindetailsDAO" class="org.ims.dao.entitydao.ImsLogindetailsDAO">
+    <bean id="ImsDAOTemplate" class="org.ims.dao.template.ImsDAOTemplate">
+        <property name="hibernateTemplate" ref="template"></property>
+    
     </bean>
-    <bean id="ImsAppSettingsDAO" class="org.ims.dao.entitydao.ImsAppSettingDAO">
+    <bean id="ImsLogindetailsDAO" class="org.ims.dao.entitydao.ImsLogindetailsDAO">
+        <property name="hibernateTemplate" ref="template"></property>
+        <!--<property name="template" ref="template"></property>-->  
+    </bean>
+    <bean id="ImsAppSettingsDAO" class="org.ims.dao.entitydao.ImsAppSettingDAO"> 
+        <property name="hibernateTemplate" ref="template"></property>
+        <!--<property name="template" ref="template"></property>-->  
     </bean>
     <bean id="ImsDealerMasterDAO" class="org.ims.dao.entitydao.ImsDealerDetailsDAO">
+        <property name="hibernateTemplate" ref="template"></property>
     </bean>
     <bean id="ImsSupplierMasterDAO" class="org.ims.dao.entitydao.ImsSupplierDetailsDAO">
+        <property name="hibernateTemplate" ref="template"></property>
     </bean>
     <bean id="ImsDealersauthorizerDAO" class="org.ims.dao.entitydao.ImsDealersauthorizerDAO">
+        <property name="hibernateTemplate" ref="template"></property>
     </bean>
     <bean id="ImsSuppliersauthorizerDAO" class="org.ims.dao.entitydao.ImsSuppliersauthorizerDAO">
+        <property name="hibernateTemplate" ref="template"></property>
     </bean>
     <bean id="ImsProductcategoryDAO" class="org.ims.dao.entitydao.ImsProductcategoryDAO">
+        <property name="hibernateTemplate" ref="template"></property>
     </bean>
     <bean id="ImsProductdetailsDAO" class="org.ims.dao.entitydao.ImsProductdetailsDAO">
+        <property name="hibernateTemplate" ref="template"></property>
     </bean>
     <bean id="ImsImsManageordersDAO" class="org.ims.dao.entitydao.ImsManageordersDAO">
+        <property name="hibernateTemplate" ref="template"></property>
+    </bean>
+     <bean id="ImsManageordersdetailsDAO" class="org.ims.dao.entitydao.ImsManageorderdetailsDAO">
+        <property name="hibernateTemplate" ref="template"></property>
     </bean>
     <bean id="ImsGenraldefinitionDAO" class="org.ims.dao.entitydao.ImsGenraldefinitionDAO">
+        <property name="hibernateTemplate" ref="template"></property>
     </bean>
     <bean id="ImsTaxslabDAO" class="org.ims.dao.entitydao.ImsTaxslabDAO">
+        <property name="hibernateTemplate" ref="template"></property>
     </bean>
-      
-    <bean id="Appsettings" class="org.ims.transactionEngine.securityManager.Appsettings">
+    <bean id="ImsInvoiceMasterDAO" class="org.ims.dao.entitydao.ImsInvoiceMasterDAO">
+        <property name="hibernateTemplate" ref="template"></property>
+    </bean> 
+    <bean id="ImsTransactionDetailsDAO" class="org.ims.dao.entitydao.ImsTransactionDetailsDAO">
+        <property name="hibernateTemplate" ref="template"></property>
     </bean>
-    <bean id="DealerService" class="org.ims.transactionEngine.DealerService.DealerService">
+    
+    
+    
+    <bean id="Appsettings" class="org.ims.transactionEngine.securityManager.Appsettings"   >
+        <!--<property name="imsappsettings" ref="ImsAppSettingsDAO" ></property>-->
     </bean>
-    <bean id="SupplierService" class="org.ims.transactionEngine.SupplierService.SupplierService">
+    <bean id="LoginService" class="org.ims.transactionEngine.securityManager.Loginservice"  >
+        
     </bean>
-    <bean id="SupplierAuthorizerService" class="org.ims.transactionEngine.SupplierService.SupplierAuthorizerService">
+    <bean id="DealerService" class="org.ims.transactionEngine.DealerService.DealerService"  >
+        <!--<property name="imsdealerdao" ref="ImsDealerMasterDAO"></property>-->
     </bean>
-    <bean id="DealerAuthorizerService" class="org.ims.transactionEngine.DealerService.DealerAuthorizerService">
+    <bean id="SupplierService" class="org.ims.transactionEngine.SupplierService.SupplierService"  >
+        <!--<property name="imssupplierdao" ref="ImsSupplierMasterDAO"></property>-->
     </bean>
-    <bean id="ProductCategoryService" class="org.ims.transactionEngine.InventoryService.ProductCategoryService">
+    <bean id="SupplierAuthorizerService" class="org.ims.transactionEngine.SupplierService.SupplierAuthorizerService"  >
+<!--        <property name="supplierauthorizer" ref="ImsSupplierMasterDAO"></property>
+        <property name="supplierauthorizerdao" ref="ImsSuppliersauthorizerDAO"></property>-->
     </bean>
-    <bean id="ProductService" class="org.ims.transactionEngine.InventoryService.ProductService">
+    <bean id="DealerAuthorizerService" class="org.ims.transactionEngine.DealerService.DealerAuthorizerService"  >
+<!--        <property name="dealerauthorizer" ref="ImsDealerMasterDAO"></property>
+        <property name="dealerdao" ref="ImsDealersauthorizerDAO"></property>-->
     </bean>
-    <bean id="OrderManagementService" class="org.ims.transactionEngine.InventoryService.OrderManagementService">
+    <bean id="ProductCategoryService" class="org.ims.transactionEngine.InventoryService.ProductCategoryService"  >
+        <!--<property name="imsproductcategorydao" ref="ImsProductcategoryDAO"></property>-->
     </bean>
-    <bean id="LoginService" class="org.ims.transactionEngine.securityManager.Loginservice">
+    <bean id="ProductService" class="org.ims.transactionEngine.InventoryService.ProductService"  >
+<!--        <property name="imsproductsdao" ref="ImsProductdetailsDAO"></property>
+        <property name="imsproductcategorydao" ref="ImsProductcategoryDAO"></property>-->
     </bean>
-    <bean id="LoginModel" class="org.ims.transactionEngine.model.LoginModel">
+    <bean id="OrderManagementService" class="org.ims.transactionEngine.InventoryService.OrderManagementService"  >
+<!--        <property name="imsmanageorders" ref="ImsImsManageordersDAO"></property>
+        <property name="imsProductdetailsDAO" ref="ImsProductdetailsDAO"></property>
+        <property name="imsDealerDetailsDAO" ref="ImsDealerMasterDAO"></property>
+        <property name="imsSupplierDetailsDAO" ref="ImsSupplierMasterDAO"></property>
+        <property name="imsManageorderdetailsDAO" ref="ImsManageordersdetailsDAO"></property>-->
     </bean>
-    <bean id="MiscService" class="org.ims.transactionEngine.securityManager.MiscService">
+    <bean id="InvoiceService" class="org.ims.transactionEngine.InventoryService.InvoiceService"  >
+        <!--<property name="imsmanageorders" ref="ImsImsManageordersDAO"></property>-->
+<!--        <property name="imsProductdetailsDAO" ref="ImsProductdetailsDAO"></property>
+        <property name="imsDealerDetailsDAO" ref="ImsDealerMasterDAO"></property>
+        <property name="imsSupplierDetailsDAO" ref="ImsSupplierMasterDAO"></property>
+        <property name="imsManageorderdetailsDAO" ref="ImsManageordersdetailsDAO"></property>
+        <property name="ordmgmt" ref="OrderManagementService"></property>
+        <property name="imsInvoiceDAO" ref="ImsInvoiceMasterDAO"></property>-->
     </bean>
+<!--    <bean id="MiscService" class="org.ims.transactionEngine.securityManager.MiscService" >
+        
+    </bean>-->
+    
 </beans>

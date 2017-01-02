@@ -36,8 +36,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @RestController
 public class ImsMiscService {
 
-    @Autowired
-    private MiscService miscService;
+//    @Autowired
+    private MiscService  miscService = new MiscService();
 
     static Logger log = Logger.getLogger(ImsMiscService.class.getName());
  

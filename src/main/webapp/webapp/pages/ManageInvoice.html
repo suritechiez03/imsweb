@@ -141,6 +141,10 @@
                                                placeholder="No of Packs">
                                     </md-input-container> 
                                     <md-input-container>
+                                        <input ng-model="ManageInvoice.lrnoAndDate"
+                                               placeholder="LR No.">
+                                    </md-input-container> 
+                                    <md-input-container>
                                         <input ng-model="ManageInvoice.Grossweight"
                                                placeholder="Gross Weight">
                                     </md-input-container> 
@@ -297,10 +301,13 @@
                                 </md-table-container>
                             </md-card-title>
                             <md-card-actions layout="row" layout-align="end center">
+                                <md-button class="md-raised md-primary" ng-click="getQuotation();">Get Quotation</md-button>
                                 <md-button class="md-raised md-primary" ng-click="SubmitInvoice();">Confirm</md-button>
                             </md-card-actions>
                         </md-card>
-                    </md-tab></md-tabs>
+                    </md-tab>
+                    
+                </md-tabs>
             </form>
         </md-content>
     </md-content>

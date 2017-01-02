@@ -5,11 +5,22 @@
  */
 'use strict';
 
-imsappctrl.factory('ManageOrderService',
+imsappctrl.factory('ManageInvoiceService',
         ['$http', '$cookieStore', '$rootScope', '$timeout',
             function ($http, $cookieStore, $rootScope, $timeout) {
                 var service = {};
                 
+                  service.ProcessInvoice = function (invoiceDetails, callback) {
+                    $http.post('/IMSWEB/ProcessInvoice', invoiceDetails, {headers: {'Content-Type': 'application/json; charset=UTF-8'}})
+                            .success(function (response,orderno) {
+                                console.log("New Invoice added successfully...........................");
+                                callback("OK",response);
+                            })
+                            .error(function (response) {
+                                console.log("New Invoice  added unsuccessfully...........................");
+                                callback("FAILED" + response);
+                            });
+                };
                 
                 return service;
             }

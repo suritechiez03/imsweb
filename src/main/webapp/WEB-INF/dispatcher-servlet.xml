@@ -44,6 +44,9 @@
           -->
     <!--<import resource="imswebbeans.xml"/>-->
     <!--<import resource="transactionbeans.xml"/>-->
+      
+    
+    
     <import resource="applicationContext.xml"/>
     
     <mvc:resources mapping="/webapp/**" location="/webapp/" cache-period="31556926"/>

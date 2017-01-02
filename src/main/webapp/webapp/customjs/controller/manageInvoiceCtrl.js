@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 imsappctrl.controller('manageInvoicesCtrl',
-        ['$scope', '$rootScope', '$timeout', '$mdDialog', '$log', '$mdMedia', '$location', '$filter', 'ManageOrderService', 'dealerService', 'supplierService', 'ManageProductService', 'AlertService', 'GeneralDefinitionService',
-            function ($scope, $rootScope, $timeout, $mdDialog, $log, $mdMedia, $location, $filter, ManageOrderService, dealerService, supplierService, ManageProductService, AlertService, GeneralDefinitionService) {
+        ['$scope', '$rootScope', '$timeout', '$mdDialog', '$log', '$mdMedia', '$location', '$filter', 'ManageOrderService', 'dealerService', 'supplierService', 'ManageProductService', 'AlertService', 'GeneralDefinitionService','ManageInvoiceService',
+            function ($scope, $rootScope, $timeout, $mdDialog, $log, $mdMedia, $location, $filter, ManageOrderService, dealerService, supplierService, ManageProductService, AlertService, GeneralDefinitionService,ManageInvoiceService) {
                 $scope.selectedproductlist = [];
 
                 $scope.ManageInvoice = {products: ''};
@@ -167,12 +167,14 @@ imsappctrl.controller('manageInvoicesCtrl',
                         }
                         
                     }
+                    if ($scope.ManageInvoice.InvoiceType==="New"){
+                        for (i = 0; i < $scope.selectedproductlist.length; i++) {
+                            $scope.Remove(i);
+                        }
+                    }
                     $scope.selectedIndex = 1;
                 };
-                $scope.SubmitInvoice=function(){
-                    $scope.ManageInvoice.products=$scope.selectedproductlist;
-                  alert(JSON.stringify($scope.ManageInvoice));
-                };
+
                 $scope.fixedto4digit = function (i) {
 
                     console.log((+(Math.round(i + "e+4") + "e-4")));
@@ -188,6 +190,29 @@ imsappctrl.controller('manageInvoicesCtrl',
                         console.log(JSON.stringify(response));
                         $scope.productlist = response;
                     });
+                };
+                 $scope.SubmitInvoice = function () {
+//                    console.log($scope.selectedproductlist);
+                    $scope.ManageInvoice.products = $scope.selectedproductlist;
+                    $scope.ManageInvoice.OrderFor=$scope.ManageInvoice.InvoiceFor; // to map with order mgmt model
+                    $scope.ManageInvoice.dealerorsupplierno=$scope.ManageInvoice.DealerOrSupplier.supplierdealerno; // to map with order mgmt model
+                    console.log(JSON.stringify($scope.ManageInvoice));
+                    ManageInvoiceService.ProcessInvoice($scope.ManageInvoice, function (response, orderno) {
+//                        console.log(order     no);
+                        if (response == "OK") {
+                            AlertService.showAlert(this, "New Invoice", "Invoice# " + orderno.GeneratedOrderNo + " has been recived Successfully for " + $scope.ManageOrder.dealerorsupplierno, "ok");
+                            $scope.selectedproductlist = [];
+                            $scope.ManageInvoice.products = [];
+                        } else {
+                            AlertService.showAlert(this, "New Order", "Unable to Recive order for " + $scope.ManageInvoice.dealerorsupplierno, "ok");
+                        }
+
+                    });
+                };
+                $scope.getQuotation=function(){
+                  $scope.selectedIndex=2;
+                  $scope.hideManageInvoice=true;
+               
                 };
 
             }

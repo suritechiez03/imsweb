@@ -45,6 +45,11 @@ imsappctrl.config(function ($stateProvider, $urlRouterProvider) {
                 url: '/manageinvoice',
                 templateUrl: 'pages/ManageInvoice.html',
                 controller: 'homeCtrl'
+            })
+            .state('home.managetransaction', {
+                url: '/managetransaction',
+                templateUrl: 'pages/ManageTransaction.html',
+                controller: 'homeCtrl'
             });
 
     $urlRouterProvider.otherwise('/');

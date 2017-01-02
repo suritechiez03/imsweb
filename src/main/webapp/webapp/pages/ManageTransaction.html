@@ -1,0 +1,66 @@
+<div ng-controller="manageTransactionCtrl" data-ng-init="" flex>
+    <md-content flex>
+        <md-tabs md-dynamic-height md-border-bottom md-selected="selectedIndex"> 
+            <md-tab id="tab1" label="Payment">
+                <md-toolbar class="md-theme-light">
+                    <h3 class="md-toolbar-tools">
+                        <span> Payment Method</span>
+                    </h3>
+                </md-toolbar>
+                <md-content class="md-padding" flex>
+                    <form name="frmPayment">
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label> Invoice No : </label>
+                                <input type="text" ng-model="ManageTransaction.InvoiceNo" required >
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label> Transaction Date : </label>
+                                <md-datepicker ng-model="ManageTransaction.TransactionDate" md-placeholder="Enter date" valid required></md-datepicker>
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <md-select ng-model="ManageTransaction.PaymentMethod" ng-change="" required>
+                                    <md-option ng-repeat="option in PaymentMethodOptions" value="{{option.abbrev}}">
+                                        {{option.abbrev}}
+                                    </md-option>
+                                </md-select> 
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label> Amount To Paid : </label>
+                                <label>{{ManageTransaction.AmountToBePaid| currency:"&#8377;"}}</label>
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label> Transaction Amount : </label>
+                                <input type="text" ng-model="ManageTransaction.TransactionAmount" >
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-button  class="md-raised md-primary" ng-click=""
+                                        ng-disabled="frmPayment.$dirty && frmPayment.$invalid"> Save </md-button>
+                        </div>
+                    </form>
+                </md-content>
+            </md-tab>
+            <md-tab id="tab1" label="View Outstanding Invoice" ng-click=";">
+                <md-toolbar class="md-theme-light">
+                    <h3 class="md-toolbar-tools">
+                        <span> Outstanding Invoice's </span>
+                    </h3>
+                </md-toolbar>
+                <md-content class="md-padding" flex>
+                    <form name="addProduct" novalidate>
+
+                    </form>
+                </md-content>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>
