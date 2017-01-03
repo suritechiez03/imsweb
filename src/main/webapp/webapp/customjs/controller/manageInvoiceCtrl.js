@@ -70,6 +70,8 @@ imsappctrl.controller('manageInvoicesCtrl',
                             $scope.ManageInvoice.secondaryEducationCessPercentage = $scope.TaxSlab[0].secondaryEducationCessPercentage;
                             $scope.ManageInvoice.VAT1 = $scope.TaxSlab[0].vat1;
                             $scope.ManageInvoice.VAT2 = $scope.TaxSlab[0].vat2;
+                            $scope.VATList=[$scope.TaxSlab[0].vat1,$scope.TaxSlab[0].vat2];
+                            
 
                         } else {
                             AlertService.showAlert(this, "", "Tax Values not Loaded ", "OK");

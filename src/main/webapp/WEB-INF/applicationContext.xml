@@ -38,52 +38,20 @@
 
             </props>
         </property>
-<!--        <property name="hibernateProperties">
-            <bean
-                class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-                <property name="propertiesArray">
-                    <list>
-                        
-                    </list>
-                </property>
-            </bean>
-        </property>-->
+
         <property name="mappingLocations" value="classpath:org/ims/dao/entity/*.hbm.xml">
         </property>
             
-<!--
-        <mapping resource="org/ims/dao/entity/ImsEmployee.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsOptionrights.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsBanktransactions.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsManageorderdetails.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsPartnerdetails.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsManageorders.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsSalesproductdetails.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsStockdetails.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsPurchasemaster.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsPurchaseproductdetails.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsSuppliermaster.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsDealersauthorizer.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsBankaccountdetails.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsTransactiondetails.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsSuppliersauthorizer.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsProductdetails.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsOrderdetails.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsSalesmaster.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsAppsettings.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsProductcategory.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsLogindetails.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsTaxslab.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsGenraldefinition.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsGrouprights.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsInvoiceMaster.hbm.xml"/>
-        <mapping resource="org/ims/dao/entity/ImsDealermaster.hbm.xml"/>-->
+
     </bean>
     
    <bean id="template" class="org.springframework.orm.hibernate4.HibernateTemplate">  
         <property name="sessionFactory" ref="sessionFactory"></property>  
         <property name="checkWriteOperations" value="false"></property>
     </bean>
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+    <property name="sessionFactory" ref="sessionFactory"></property>
+</bean>
     <tx:annotation-driven transaction-manager="transactionManager" />
 
     
@@ -182,8 +150,8 @@
         <property name="ordmgmt" ref="OrderManagementService"></property>
         <property name="imsInvoiceDAO" ref="ImsInvoiceMasterDAO"></property>-->
     </bean>
-<!--    <bean id="MiscService" class="org.ims.transactionEngine.securityManager.MiscService" >
+<bean id="MiscService" class="org.ims.transactionEngine.securityManager.MiscService" >
         
-    </bean>-->
+    </bean>
     
 </beans>

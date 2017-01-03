@@ -215,11 +215,18 @@
                                             <td md-cell>{{item.orderQuantity}}</td>
                                             <td md-cell><input ng-model="selectedproductlist[$index].UnitPrice" type="number"  step="0.01" ng-change="updateTotal(item);"></td>
                                             <td md-cell><input ng-model="selectedproductlist[$index].Discount" type="number"  step="0.1"  ng-change="updateTotal(item);"></td>
-                                            <td md-cell><input ng-model="selectedproductlist[$index].VAT" type="number"  step="0.01"     ng-change="updateTotal(item);"></td>
+                                            <td md-cell>
+                                                <input ng-show="{{ManageInvoice.InvoiceFor==="Supplier"}}" ng-model="selectedproductlist[$index].VAT" type="number"  step="0.01"     ng-change="updateTotal(item);">
+                                            <md-select ng-show="{{ManageInvoice.InvoiceFor==="Dealer"}}" ng-model="selectedproductlist[$index].VAT" ng-change="updateTotal(item);" required>
+                                                <md-option ng-repeat="option in VATList" value="{{option.Vat}}">
+                                                    <span style="color: blue">{{option.Vat}} </span>
+                                                </md-option>
+                                            </md-select>
+                                            </td>
                                             <td md-cell><b>{{item.TotalPrice}}</b> </td>
-                                            <td md-cell><input ng-model="selectedproductlist[$index].MarginPrecnt" type="number"  step="0.01"  ng-change="updateTotal(item);"></td>
-                                            <td md-cell><b>{{item.MarginAmt}}</b></td>
-                                            <td md-cell><b>{{item.DealerPrice}}</b></td>
+                                            <td md-cell ng-show="{{ManageInvoice.InvoiceFor==="Supplier"}}"><input ng-model="selectedproductlist[$index].MarginPrecnt" type="number"  step="0.01"  ng-change="updateTotal(item);"></td>
+                                            <td md-cell ng-show="{{ManageInvoice.InvoiceFor==="Supplier"}}"><b>{{item.MarginAmt}}</b></td>
+                                            <td md-cell ng-show="{{ManageInvoice.InvoiceFor==="Supplier"}}"><b>{{item.DealerPrice}}</b></td>
 
                                             </tr>
                                             </tbody>
@@ -306,7 +313,7 @@
                             </md-card-actions>
                         </md-card>
                     </md-tab>
-                    
+
                 </md-tabs>
             </form>
         </md-content>
