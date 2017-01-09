@@ -6,8 +6,8 @@
 
 
 imsappctrl.controller('supplierCtrl',
-        ['$scope', '$timeout', '$log', '$mdMedia', 'supplierService',
-            function ($scope, $timeout, $log, $mdMedia, supplierService) {
+        ['$scope', '$timeout', '$log', '$mdMedia', 'supplierService','AlertService',
+            function ($scope, $timeout, $log, $mdMedia, supplierService,AlertService) {
                 var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
                 $scope.selectedTab = 1;
                 $scope.Supplier = {};
@@ -17,14 +17,14 @@ imsappctrl.controller('supplierCtrl',
 
                         $scope.Supplier = {
                             supplierNumber: response,
-                            companyName: "TestCompany",
-                            companyWebsite: "www.TestCompany.com",
-                            companyEmail: "TestCompany@email.com",
-                            tinNumber: "TIN001",
-                            cstNumber: "CST01",
-                            panNumber: "ASDF1234S",
-                            comapanyAddress: "TestCompanyAdress",
-                            offlicePhNumber: "999999"
+                            companyName: "",
+                            companyWebsite: "",
+                            companyEmail: "",
+                            tinNumber: "",
+                            cstNumber: "",
+                            panNumber: "",
+                            comapanyAddress: "",
+                            offlicePhNumber: ""
 
                         };
                     });
@@ -51,14 +51,14 @@ imsappctrl.controller('supplierCtrl',
                     alert(data);
                     if ($scope.SAVE_UPDATE_DELETE_FLAG === "Save")
                         supplierService.addNewSupplier(data, function (response) {
-                            alert("New Supplier Added " + response);
+                            AlertService.showAlert(this,"Info","New Supplier Added Successfully","OK");
                             $scope.Supplier = null;
                             $scope.getSupplierNo();
 
                         });
                     if ($scope.SAVE_UPDATE_DELETE_FLAG === "Update")
                         supplierService.updateSupplier(data, function (response) {
-                            alert("Supplier Info Updated " + response);
+                            AlertService.showAlert(this,"Info","Supplier Info Successfully","OK");
                             $scope.Supplier = null;
                             $scope.selectedIndex = 1;
 

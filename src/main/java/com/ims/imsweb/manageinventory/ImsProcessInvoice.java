@@ -45,9 +45,14 @@ public class ImsProcessInvoice {
     @Autowired
     private InvoiceService  invoiceservice;
     static Logger log = Logger.getLogger(ImsManageInventory.class.getName());
+     @RequestMapping(value = "/getSalesInvoiceNo", method = RequestMethod.GET, produces = "text/html")
+    public ResponseEntity getSalesInvoiceNo(HttpServletResponse response, HttpServletRequest request) {
+        log.info("Generating new Invoice Number");
+        return new ResponseEntity<>(invoiceservice.getSalesInvoiceNo(),HttpStatus.OK);
+    }
     @RequestMapping(value = "/ProcessInvoice", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity ProcessInvoice(HttpServletResponse response, HttpServletRequest request, @RequestBody String orderdetails) {
-            log.info("takeOrder() --  New Order" + orderdetails);
+            log.info("ProcessInvoice() --  New Order" + orderdetails);
             OrderManagementModel ordermodel = new OrderManagementModel();
             InvoiceModel invoice=new InvoiceModel();
         try {  
@@ -61,11 +66,11 @@ public class ImsProcessInvoice {
             ordermodel.setEnteredDate(ApplicationUtil.getDate());
             invoice.setEnteredDate(ApplicationUtil.getDate());
             
-            invoiceservice.ProcessInvoice(ordermodel, invoice, loginservice.getLoggedinUserinfo(hs.getAttribute("UserName").toString()));
+            ordermodel.setGeneratedOrderNo(invoiceservice.ProcessInvoice(ordermodel, invoice, loginservice.getLoggedinUserinfo(hs.getAttribute("UserName").toString())));
 //            ordermodel.setGeneratedOrderNo(orderservice.saveOrder(ordermodel,loginservice.getLoggedinUserinfo(hs.getAttribute("UserName").toString())));
             return new ResponseEntity(ordermodel,HttpStatus.OK);
         } catch (IOException | ParseException ex) {
-            java.util.logging.Logger.getLogger(ImsOrderManagement.class.getName()).log(Level.SEVERE, null, ex);
+            log.error("ProcessInvoice() --  New Order" + orderdetails);
             return new ResponseEntity<>(ordermodel,HttpStatus.INTERNAL_SERVER_ERROR);
         }
         

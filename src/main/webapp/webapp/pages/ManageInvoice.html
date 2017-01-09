@@ -60,7 +60,7 @@
                         <div layout-gt-xs="row">
                             <md-card flex>
 
-                                <div style="padding-left: 10">
+                                <div style="padding-left:10">
 
                                     <h1 style="alignment-adjust: central">{{ManageInvoice.InvoiceFor=="Dealer"?"Sales Invoice ":" Purchase Invoice";}}</h1>
                                     <div flex-gt-xs>
@@ -68,12 +68,13 @@
                                         <md-datepicker ng-model="ManageInvoice.Invoicedate" md-placeholder="Enter date" valid required></md-datepicker>
                                     </div>
                                     <div flex-gt-xs>
-                                        <md-input-container>
+                                        <md-input-container  > 
                                             <label> <b> Invoice No# : </b></label>
                                             <input ng-model="ManageInvoice.InvoiceNo"
                                                    placeholder="InvoiceNo"
                                                    text="Invoice No#:"
-                                                   required> 
+                                                   ng-disabled="SaleInvoice"
+                                                   required=""> 
                                         </md-input-container>
                                     </div>
                                 </div>
@@ -199,9 +200,9 @@
                                                     <th md-column md-numeric>Discount %</th>  
                                                     <th md-column md-numeric>VAT %</th>  
                                                     <th md-column md-numeric>Total Price</th> 
-                                                    <th md-column md-numeric>Margin %</th> 
-                                                    <th md-column md-numeric>Margin Amt</th> 
-                                                    <th md-column md-numeric>Dealer Price</th> 
+                                                    <th md-column md-numeric ng-show="PurchaseInvoice">Margin %</th> 
+                                                    <th md-column md-numeric ng-show="PurchaseInvoice">Margin Amt</th> 
+                                                    <th md-column md-numeric ng-show="PurchaseInvoice">Dealer Price</th> 
 
                                                 </tr>
                                             </thead> 
@@ -215,18 +216,21 @@
                                             <td md-cell>{{item.orderQuantity}}</td>
                                             <td md-cell><input ng-model="selectedproductlist[$index].UnitPrice" type="number"  step="0.01" ng-change="updateTotal(item);"></td>
                                             <td md-cell><input ng-model="selectedproductlist[$index].Discount" type="number"  step="0.1"  ng-change="updateTotal(item);"></td>
-                                            <td md-cell>
-                                                <input ng-show="{{ManageInvoice.InvoiceFor==="Supplier"}}" ng-model="selectedproductlist[$index].VAT" type="number"  step="0.01"     ng-change="updateTotal(item);">
-                                            <md-select ng-show="{{ManageInvoice.InvoiceFor==="Dealer"}}" ng-model="selectedproductlist[$index].VAT" ng-change="updateTotal(item);" required>
-                                                <md-option ng-repeat="option in VATList" value="{{option.Vat}}">
-                                                    <span style="color: blue">{{option.Vat}} </span>
+                                            <td md-cell  ng-show="PurchaseInvoice">
+                                                <input ng-model="selectedproductlist[$index].VAT" type="number"  step="0.01"     ng-change="updateTotal(item);">
+
+                                            </td>
+                                            <td md-cell ng-show="SaleInvoice" >
+                                            <md-select  ng-model="selectedproductlist[$index].VAT" ng-change="updateTotal(item);" required>
+                                                <md-option ng-repeat="option in VATList" value="{{option}}">
+                                                    <span style="color: blue">{{option}} </span>
                                                 </md-option>
                                             </md-select>
                                             </td>
                                             <td md-cell><b>{{item.TotalPrice}}</b> </td>
-                                            <td md-cell ng-show="{{ManageInvoice.InvoiceFor==="Supplier"}}"><input ng-model="selectedproductlist[$index].MarginPrecnt" type="number"  step="0.01"  ng-change="updateTotal(item);"></td>
-                                            <td md-cell ng-show="{{ManageInvoice.InvoiceFor==="Supplier"}}"><b>{{item.MarginAmt}}</b></td>
-                                            <td md-cell ng-show="{{ManageInvoice.InvoiceFor==="Supplier"}}"><b>{{item.DealerPrice}}</b></td>
+                                            <td md-cell ng-show="PurchaseInvoice"><input ng-model="selectedproductlist[$index].MarginPrecnt" type="number"  step="0.01"  ng-change="updateTotal(item);"></td>
+                                            <td md-cell ng-show="PurchaseInvoice"><b>{{item.MarginAmt}}</b></td>
+                                            <td md-cell ng-show="PurchaseInvoice"><b>{{item.DealerPrice}}</b></td>
 
                                             </tr>
                                             </tbody>
@@ -285,7 +289,7 @@
                                                 <td md-cell> <label> %</label> </td>
                                                 <td md-cell><input ng-model="ManageInvoice.Vat1Rate" type="number" string-to-number  step="0.01" readonly></td>
                                             </tr>
-                                            <tr md-row ng-show="false">
+                                            <tr md-row ng-show="SaleInvoice">
                                                 <td md-cell>VAT @ </td>
                                                 <td md-cell><span flex><input ng-model="ManageInvoice.VAT2" type="number" string-to-number  step="0.01" ng-change="CalcuateCharges();" ></span></td>
                                                 <td md-cell> <label>%</label> </td>
@@ -299,7 +303,7 @@
                                             </tr>
                                             <tr md-row>
                                                 <td md-cell><h2>Total Amount  :</h2> </td>
-                                                <td md-cell><span flex></span></td>
+                                                <td md-cell><span flex></span></td> 
                                                 <td md-cell> <label></label></td>
                                                 <td md-cell><h2 style="color: brown"> <span id="currency-default">{{ManageInvoice.FinalAmount| currency:"&#8377;"}}</span></h2></td>
                                             </tr>
@@ -308,14 +312,14 @@
                                 </md-table-container>
                             </md-card-title>
                             <md-card-actions layout="row" layout-align="end center">
-                                <md-button class="md-raised md-primary" ng-click="getQuotation();">Get Quotation</md-button>
-                                <md-button class="md-raised md-primary" ng-click="SubmitInvoice();">Confirm</md-button>
+                                <md-button class="md-raised md-primary"  ng-click="getPdf();" >Get Quotation</md-button>
+                                <md-button  class="md-raised md-primary" ng-click="SubmitInvoice();">Confirm</md-button>
                             </md-card-actions>
                         </md-card>
                     </md-tab>
 
                 </md-tabs>
-            </form>
+            </form> 
         </md-content>
     </md-content>
 </div>

@@ -5,6 +5,7 @@
  */
 package com.ims.imsweb.manageinventory;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.List;
@@ -121,7 +122,9 @@ public class ImsManageInventory {
         ObjectMapper objm = new ObjectMapper();
         HttpSession hs = request.getSession();
         try {
+            objm.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             productModel = objm.readValue(productinfo, ProductModel.class);
+            
             productModel.setEnteredDate(ApplicationUtil.getDate());
             if (productservice.addProduct(productModel, loginservice.getLoggedinUserinfo(hs.getAttribute("UserName").toString()))) {
                 log.info("addProduct() -- Added product " + productModel.getProductcode());

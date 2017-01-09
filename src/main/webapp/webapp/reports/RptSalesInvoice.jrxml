@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RptSalesInvoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4d4f67be-c728-4892-9b7e-6df9d26873fd">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="137"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Heading 3" fontSize="14" isBold="true"/>
 	<style name="Heading" fontSize="14"/>
 	<style name="Text Body"/>
@@ -21,8 +21,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[
-Select ims_manageorders.OderNumber,
+		<![CDATA[Select vwAppDetails.AppName,vwAppDetails.AppDesc,ims_manageorders.OderNumber,
 ims_manageorders.GeneratedOrderNo,
 ims_manageorders.OrderRaisedDate,
 (select ProductName from ims_productdetails where ProductCode=ims_manageorderdetails.ProductCode)  as ProductName,
@@ -68,14 +67,19 @@ Ims_InvoiceMaster.RoundOff,
 Ims_InvoiceMaster.VATTotal1,
 Ims_InvoiceMaster.VATTotal2,
 Ims_InvoiceMaster.TotalAmount
-from ims_manageorders  JOIN ims_manageorderdetails 
+from vwAppDetails,ims_manageorders  JOIN ims_manageorderdetails 
 ON ims_manageorders.OderNumber=ims_manageorderdetails.OrderNumber
 JOIN vwDealerSupplierDetails vwdealersupplier ON ims_manageorders.OrderRaisedBy=vwdealersupplier.DealerSupplier
 JOIN Ims_InvoiceMaster ON Ims_InvoiceMaster.OrderNo=ims_manageorders.OderNumber
 Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
-;
-]]>
+;]]>
 	</queryString>
+	<field name="AppName" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="AppDesc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="OderNumber" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -215,7 +219,7 @@ Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="45" splitType="Stretch">
+		<band height="66" splitType="Stretch">
 			<textField pattern="EEE, d MMM yyyy HH:mm:ss Z">
 				<reportElement x="407" y="23" width="148" height="20" uuid="49875aef-d95a-44ef-b95c-1f7ba8391732"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
@@ -224,6 +228,27 @@ Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
 				<reportElement x="407" y="3" width="100" height="20" uuid="3387bd22-84b2-422d-9c91-3765b737d7bb"/>
 				<text><![CDATA[Generated Date :]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="407" height="20" forecolor="#000099" uuid="97c0f051-15a2-4728-ad15-a5668e70a1ed"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{AppName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="154" y="45" width="253" height="20" forecolor="#990000" uuid="4a5ca52d-c514-406c-813b-4d1382ed871d"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sales Invoice]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="20" width="407" height="25" uuid="7beef13c-1f44-429b-bc92-1175b40a090c"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{AppDesc}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -251,25 +276,25 @@ Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
 				<reportElement stretchType="RelativeToBandHeight" x="0" y="65" width="304" height="20" uuid="e3610ac5-6f09-40eb-a98d-1d2e2491b7bf"/>
 				<textFieldExpression><![CDATA[$F{CompanyName}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="85" width="183" height="20" uuid="2bd9a2b7-4363-4e09-9b36-aef2d2dda654"/>
 				<textFieldExpression><![CDATA["Website :" + $F{Companywebsite}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="105" width="183" height="20" uuid="4213a7aa-edde-49ab-a292-8ec3b53d0542"/>
 				<textFieldExpression><![CDATA["Email :" + $F{CompanyEmail}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="125" width="183" height="20" uuid="937df249-1b06-44ee-a9c1-11a03adacd86"/>
 				<textFieldExpression><![CDATA["Phone :"+ $F{OfflicePhNumber}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="145" width="183" height="20" uuid="c5059dd4-a9ba-4a67-a581-553dcae13b90"/>
 				<textFieldExpression><![CDATA["TIN No# " + $F{TinNumber}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement style="Text Body" x="0" y="45" width="304" height="20" uuid="2dded9f6-cc9d-4c00-bdd6-2f062dc1dd92"/>
-				<text><![CDATA[Supplier Details and Contact Info]]></text>
+				<text><![CDATA[Dealer Details and Contact Info]]></text>
 			</staticText>
 			<rectangle>
 				<reportElement x="0" y="165" width="552" height="160" uuid="83f7a8c5-31c5-4631-ba06-ff703888d9ca"/>
@@ -278,11 +303,11 @@ Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
 				<reportElement x="0" y="179" width="110" height="20" uuid="d267c4a5-b30d-441b-b598-4ae939fc8c9f"/>
 				<text><![CDATA[Payment Due Date :]]></text>
 			</staticText>
-			<textField pattern="dd MMMMM yyyy">
+			<textField pattern="dd MMMMM yyyy" isBlankWhenNull="true">
 				<reportElement x="110" y="179" width="100" height="20" uuid="def45086-b8ba-4f32-8b82-19b9cf52f6cf"/>
 				<textFieldExpression><![CDATA[$F{PaymentDueDate}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="407" y="179" width="145" height="20" uuid="b435dd1c-d75e-4425-9810-b27fc28e6018"/>
 				<textFieldExpression><![CDATA[$F{ExpectedDelivery}]]></textFieldExpression>
 			</textField>
@@ -290,7 +315,7 @@ Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
 				<reportElement x="275" y="179" width="132" height="20" uuid="87133aef-3d43-426a-81df-951aecbb0a71"/>
 				<text><![CDATA[Expected delivery Date :]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="110" y="199" width="100" height="20" uuid="0d34eae1-3e5d-4569-b6b3-31e9a4fc36ee"/>
 				<textFieldExpression><![CDATA[$F{PaymentTerms}]]></textFieldExpression>
 			</textField>
@@ -305,7 +330,7 @@ Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
 				<reportElement x="307" y="45" width="100" height="20" uuid="c1024dd1-fe0b-459e-b863-6471fcd72018"/>
 				<text><![CDATA[Shipping Address]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="110" y="219" width="100" height="20" uuid="0ebe2040-ddc5-4c0e-90ce-beded638bce7"/>
 				<textFieldExpression><![CDATA[$F{FrieghtTerms}]]></textFieldExpression>
 			</textField>
@@ -313,7 +338,7 @@ Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
 				<reportElement x="0" y="219" width="110" height="20" uuid="7934816e-88de-46f0-84ec-e4ff755459d1"/>
 				<text><![CDATA[Freight Terms :]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="110" y="239" width="100" height="20" uuid="6dd41f9f-9bc4-449f-9eb4-a81469641e42"/>
 				<textFieldExpression><![CDATA[$F{ESugmaNo}]]></textFieldExpression>
 			</textField>
@@ -321,7 +346,7 @@ Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
 				<reportElement x="0" y="239" width="110" height="20" uuid="641ca0ad-e08d-4bb2-be75-c2d4f04d5a19"/>
 				<text><![CDATA[ESugama No :]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="110" y="259" width="100" height="20" uuid="39865486-fd9f-4863-bdad-2dd6e22b1674"/>
 				<textFieldExpression><![CDATA[$F{LRNoAndDate}]]></textFieldExpression>
 			</textField>
@@ -337,7 +362,7 @@ Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
 				<reportElement x="342" y="0" width="65" height="20" uuid="cde33813-1722-454d-bd51-850f51a50b06"/>
 				<text><![CDATA[Rep Name  :]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="110" y="279" width="100" height="20" uuid="0c115c53-ad29-4311-b9d1-baa94c90d754"/>
 				<textFieldExpression><![CDATA[$F{Transporter}]]></textFieldExpression>
 			</textField>
@@ -345,7 +370,7 @@ Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
 				<reportElement x="0" y="279" width="110" height="20" uuid="d444e63e-b0f2-4129-a91e-3ff44b696f9c"/>
 				<text><![CDATA[Transporter :]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="110" y="299" width="165" height="20" uuid="1febadde-30ca-4fe9-892f-9b1c3dc1ce1c"/>
 				<textFieldExpression><![CDATA[$F{TransportMode}]]></textFieldExpression>
 			</textField>
@@ -353,7 +378,7 @@ Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
 				<reportElement x="0" y="299" width="110" height="20" uuid="c7277d06-1474-4ca7-8920-f642bd3e1c41"/>
 				<text><![CDATA[Transporter  Mode :]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="452" y="299" width="100" height="20" uuid="ab8792e1-d99b-4bcf-89d3-55e15dc596cb"/>
 				<textFieldExpression><![CDATA[$F{GrossWieght}]]></textFieldExpression>
 			</textField>
@@ -361,6 +386,10 @@ Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
 				<reportElement x="377" y="299" width="75" height="20" uuid="f8004202-1123-4f1c-9534-8a890027aa61"/>
 				<text><![CDATA[Gross Weight :]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="307" y="65" width="245" height="60" uuid="0e18498b-3a70-45b1-8200-6140aa788d60"/>
+				<textFieldExpression><![CDATA[$F{Destination}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -406,27 +435,6 @@ Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total Price]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="377" y="5" width="55" height="20" uuid="f8bcc7ba-8ccd-4baf-b5f2-c31069b7b4d4"/>
-				<textElement>
-					<font size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Margin %]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="432" y="5" width="58" height="20" uuid="e2b4fefa-7ea0-4e61-ab34-eac6c818e663"/>
-				<textElement>
-					<font size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Margin Amt]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="490" y="5" width="62" height="20" uuid="0fe9decf-34f7-4f19-bbe5-87fb4e2f0c9c"/>
-				<textElement>
-					<font size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Dealer Price ]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -474,27 +482,6 @@ Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
 				</textElement>
 				<textFieldExpression><![CDATA[$F{TotalPrice}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="377" y="1" width="55" height="20" uuid="326a2023-8c04-4060-9bca-fbeab522d5e1"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{MarginPrecnt}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement x="432" y="0" width="58" height="20" uuid="a04d3056-b922-4ccd-8d0f-1b5bb817f2e0"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{MarginAmt}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement x="490" y="0" width="62" height="20" uuid="00498aef-6b3c-4d30-be9e-7ae2759721b5"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{DealerPrice}]]></textFieldExpression>
-			</textField>
 		</band>
 	</detail>
 	<pageFooter>
@@ -503,7 +490,7 @@ Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
 				<reportElement x="10" y="4" width="244" height="20" uuid="020b3b6f-f881-4af4-b608-b0a761705292"/>
 				<text><![CDATA[Frieght and Forwarding Charges :]]></text>
 			</staticText>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="432" y="4" width="120" height="20" uuid="6c8e0b54-e924-4667-8e25-c75530b20602"/>
 				<textFieldExpression><![CDATA[$F{FAFCharges}]]></textFieldExpression>
 			</textField>
@@ -511,7 +498,7 @@ Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
 				<reportElement x="10" y="24" width="244" height="20" uuid="dc88ff0f-7a67-4047-9be1-a1e6d9d02fce"/>
 				<text><![CDATA[Gross amount :]]></text>
 			</staticText>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="432" y="24" width="120" height="20" uuid="3ce84537-6ac6-45f3-80f1-1ec2e7274122"/>
 				<textFieldExpression><![CDATA[$F{GrossAmount}]]></textFieldExpression>
 			</textField>
@@ -523,7 +510,7 @@ Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
 				<reportElement x="50" y="44" width="104" height="20" uuid="c1af2539-f24d-454f-8b80-7cb56fa0eed3"/>
 				<textFieldExpression><![CDATA[$F{CSTPercentage} + "%"]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="432" y="44" width="120" height="20" uuid="8018f721-0a53-4049-bff2-bab2d804f40e"/>
 				<textFieldExpression><![CDATA[$F{CSTRate}]]></textFieldExpression>
 			</textField>
@@ -535,7 +522,7 @@ Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
 				<reportElement x="10" y="64" width="100" height="20" uuid="3fe2b03b-a3cb-4301-ae04-306ead6faa4b"/>
 				<text><![CDATA[Education Cess @]]></text>
 			</staticText>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="432" y="64" width="120" height="20" uuid="aa1236d7-7c12-4a02-83f1-8286aa1632ab"/>
 				<textFieldExpression><![CDATA[$F{EducationCessRate}]]></textFieldExpression>
 			</textField>
@@ -543,24 +530,24 @@ Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
 				<reportElement x="10" y="84" width="115" height="20" uuid="a6475bfd-dd77-493b-8825-d84930343854"/>
 				<text><![CDATA[Sec Education Cess @]]></text>
 			</staticText>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="432" y="84" width="120" height="20" uuid="8c916382-686c-47b0-992a-bfc84da49cac"/>
 				<textFieldExpression><![CDATA[$F{SecEducCessRate}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement x="432" y="124" width="100" height="20" uuid="e3e36107-80e9-4c26-a44e-051af3356d47"/>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="432" y="144" width="100" height="20" uuid="e3e36107-80e9-4c26-a44e-051af3356d47"/>
 				<textFieldExpression><![CDATA[$F{RoundOff}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="432" y="104" width="120" height="20" uuid="9203fcef-b2f9-4b2f-b12a-33d0108306c7"/>
 				<textFieldExpression><![CDATA[$F{VATTotal1}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="10" y="104" width="100" height="20" uuid="fb9bc8bf-ff32-40bb-9065-c10d92dd8432"/>
-				<text><![CDATA[Vat]]></text>
+				<text><![CDATA[Vat @ ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="10" y="124" width="100" height="20" uuid="7597b308-d659-45d4-8942-25458636d431"/>
+				<reportElement x="10" y="144" width="100" height="20" uuid="7597b308-d659-45d4-8942-25458636d431"/>
 				<text><![CDATA[Round Off :]]></text>
 			</staticText>
 			<textField pattern="#,##0.00">
@@ -577,10 +564,18 @@ Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo}
 				</textElement>
 				<text><![CDATA[Total Amount  to be Paid ]]></text>
 			</staticText>
-			<textField pattern="#,##0.00">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="432" y="164" width="100" height="20" uuid="5647b8b1-6783-4ef5-92fc-34ba0d0f4385"/>
 				<textFieldExpression><![CDATA[$F{TotalAmount}]]></textFieldExpression>
 			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="432" y="124" width="120" height="20" uuid="74ce4518-061c-4b3b-8696-b0b09135bf2f"/>
+				<textFieldExpression><![CDATA[$F{VATTotal2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="124" width="100" height="20" uuid="07f47946-53cb-446d-a6fe-678eab1c9cf2"/>
+				<text><![CDATA[Vat @ ]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 	<summary>

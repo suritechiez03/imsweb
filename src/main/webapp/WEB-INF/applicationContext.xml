@@ -45,13 +45,13 @@
 
     </bean>
     
-   <bean id="template" class="org.springframework.orm.hibernate4.HibernateTemplate">  
+    <bean id="template" class="org.springframework.orm.hibernate4.HibernateTemplate">  
         <property name="sessionFactory" ref="sessionFactory"></property>  
         <property name="checkWriteOperations" value="false"></property>
     </bean>
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-    <property name="sessionFactory" ref="sessionFactory"></property>
-</bean>
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
     <tx:annotation-driven transaction-manager="transactionManager" />
 
     
@@ -89,7 +89,7 @@
     <bean id="ImsImsManageordersDAO" class="org.ims.dao.entitydao.ImsManageordersDAO">
         <property name="hibernateTemplate" ref="template"></property>
     </bean>
-     <bean id="ImsManageordersdetailsDAO" class="org.ims.dao.entitydao.ImsManageorderdetailsDAO">
+    <bean id="ImsManageordersdetailsDAO" class="org.ims.dao.entitydao.ImsManageorderdetailsDAO">
         <property name="hibernateTemplate" ref="template"></property>
     </bean>
     <bean id="ImsGenraldefinitionDAO" class="org.ims.dao.entitydao.ImsGenraldefinitionDAO">
@@ -104,54 +104,33 @@
     <bean id="ImsTransactionDetailsDAO" class="org.ims.dao.entitydao.ImsTransactionDetailsDAO">
         <property name="hibernateTemplate" ref="template"></property>
     </bean>
-    
+     <bean id="ImsStockdetailsDAO" class="org.ims.dao.entitydao.ImsStockdetailsDAO">
+        <property name="hibernateTemplate" ref="template"></property>
+    </bean>
     
     
     <bean id="Appsettings" class="org.ims.transactionEngine.securityManager.Appsettings"   >
-        <!--<property name="imsappsettings" ref="ImsAppSettingsDAO" ></property>-->
     </bean>
     <bean id="LoginService" class="org.ims.transactionEngine.securityManager.Loginservice"  >
-        
     </bean>
     <bean id="DealerService" class="org.ims.transactionEngine.DealerService.DealerService"  >
-        <!--<property name="imsdealerdao" ref="ImsDealerMasterDAO"></property>-->
     </bean>
-    <bean id="SupplierService" class="org.ims.transactionEngine.SupplierService.SupplierService"  >
-        <!--<property name="imssupplierdao" ref="ImsSupplierMasterDAO"></property>-->
+    <bean id="SupplierService" class="org.ims.transactionEngine.SupplierService.SupplierService">
     </bean>
     <bean id="SupplierAuthorizerService" class="org.ims.transactionEngine.SupplierService.SupplierAuthorizerService"  >
-<!--        <property name="supplierauthorizer" ref="ImsSupplierMasterDAO"></property>
-        <property name="supplierauthorizerdao" ref="ImsSuppliersauthorizerDAO"></property>-->
     </bean>
     <bean id="DealerAuthorizerService" class="org.ims.transactionEngine.DealerService.DealerAuthorizerService"  >
-<!--        <property name="dealerauthorizer" ref="ImsDealerMasterDAO"></property>
-        <property name="dealerdao" ref="ImsDealersauthorizerDAO"></property>-->
     </bean>
     <bean id="ProductCategoryService" class="org.ims.transactionEngine.InventoryService.ProductCategoryService"  >
-        <!--<property name="imsproductcategorydao" ref="ImsProductcategoryDAO"></property>-->
     </bean>
     <bean id="ProductService" class="org.ims.transactionEngine.InventoryService.ProductService"  >
-<!--        <property name="imsproductsdao" ref="ImsProductdetailsDAO"></property>
-        <property name="imsproductcategorydao" ref="ImsProductcategoryDAO"></property>-->
     </bean>
     <bean id="OrderManagementService" class="org.ims.transactionEngine.InventoryService.OrderManagementService"  >
-<!--        <property name="imsmanageorders" ref="ImsImsManageordersDAO"></property>
-        <property name="imsProductdetailsDAO" ref="ImsProductdetailsDAO"></property>
-        <property name="imsDealerDetailsDAO" ref="ImsDealerMasterDAO"></property>
-        <property name="imsSupplierDetailsDAO" ref="ImsSupplierMasterDAO"></property>
-        <property name="imsManageorderdetailsDAO" ref="ImsManageordersdetailsDAO"></property>-->
     </bean>
     <bean id="InvoiceService" class="org.ims.transactionEngine.InventoryService.InvoiceService"  >
-        <!--<property name="imsmanageorders" ref="ImsImsManageordersDAO"></property>-->
-<!--        <property name="imsProductdetailsDAO" ref="ImsProductdetailsDAO"></property>
-        <property name="imsDealerDetailsDAO" ref="ImsDealerMasterDAO"></property>
-        <property name="imsSupplierDetailsDAO" ref="ImsSupplierMasterDAO"></property>
-        <property name="imsManageorderdetailsDAO" ref="ImsManageordersdetailsDAO"></property>
-        <property name="ordmgmt" ref="OrderManagementService"></property>
-        <property name="imsInvoiceDAO" ref="ImsInvoiceMasterDAO"></property>-->
     </bean>
-<bean id="MiscService" class="org.ims.transactionEngine.securityManager.MiscService" >
-        
+    <bean id="MiscService" class="org.ims.transactionEngine.securityManager.MiscService" >
+        <property name="dataSource" ref="dataSource"></property>
     </bean>
     
 </beans>

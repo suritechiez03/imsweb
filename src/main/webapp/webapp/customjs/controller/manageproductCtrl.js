@@ -5,8 +5,8 @@
  */
 
 imsappctrl.controller('manageproductCtrl',
-        ['$scope', '$timeout', '$log', '$mdMedia', 'ManageProductService',
-            function ($scope, $timeout, $log, $mdMedia, ManageProductService) {
+        ['$scope', '$timeout', '$log', '$mdMedia', 'ManageProductService','AlertService',
+            function ($scope, $timeout, $log, $mdMedia, ManageProductService,AlertService) {
                 $scope.SAVE_UPDATE_DELETE_FLAG = "Save";
                 var clearproductcategory = function () {
                     $scope.ProductCategory = null;
@@ -25,7 +25,7 @@ imsappctrl.controller('manageproductCtrl',
                     var data = JSON.stringify($scope.ProductCategory);
                     if ($scope.SAVE_UPDATE_DELETE_FLAG === "Save") {
                         ManageProductService.addProductCategory(data, function (response) {
-                            alert("Added New Product Category " + response);
+                            AlertService.showAlert(this,"Info","New Product Category Added Successfully","OK");
                             clearproductcategory();
                         });
                     }
@@ -38,7 +38,7 @@ imsappctrl.controller('manageproductCtrl',
                     var data = JSON.stringify($scope.Product);
                     if ($scope.SAVE_UPDATE_DELETE_FLAG === "Save") {
                         ManageProductService.addProduct(data, function (response) {
-                            alert("Added New Product " + response);
+                            AlertService.showAlert(this,"Info","New Product Added Successfully","OK");
                             clearproduct();
                         });
                     }

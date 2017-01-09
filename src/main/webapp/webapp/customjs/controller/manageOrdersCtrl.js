@@ -9,6 +9,8 @@ imsappctrl.controller('manageOrdersCtrl',
             function ($scope,$rootScope, $timeout, $mdDialog, $log, $mdMedia,$location, ManageOrderService, dealerService, supplierService, ManageProductService, AlertService) {
                 $scope.selectedproductlist = [];
                 $scope.ManageOrder = {products: ''};
+                $scope.productlist ={stockdetails:''};
+                
                 $scope.selected = [];
                 $scope.OrderForOption = ('Dealer Supplier').split(' ').map(function (state) {
                     return {abbrev: state};
@@ -43,6 +45,8 @@ imsappctrl.controller('manageOrdersCtrl',
                     });
                 };
                 $scope.AddtoCart = function (product, qty) {
+                    console.log(product);
+//                    product.stockdetail
                     product.orderQuantity = qty;
                     if ($scope.selectedproductlist.indexOf(product) === -1){
                         $scope.selectedproductlist.push(product);

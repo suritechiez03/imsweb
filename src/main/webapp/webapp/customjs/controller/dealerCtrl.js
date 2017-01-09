@@ -6,8 +6,8 @@
 
 
 imsappctrl.controller('dealerCtrl',
-        ['$scope', '$timeout', '$log', '$mdMedia', 'dealerService',
-            function ($scope, $timeout, $log, $mdMedia, dealerService) {
+        ['$scope', '$timeout', '$log', '$mdMedia', 'dealerService','AlertService',
+            function ($scope, $timeout, $log, $mdMedia, dealerService,AlertService) {
                 var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
                 $scope.selectedTab = 1;
                 $scope.Dealer = {};
@@ -17,14 +17,14 @@ imsappctrl.controller('dealerCtrl',
 
                         $scope.Dealer = {
                             dealerNumber: response,
-                            companyName: "TestCompany",
-                            companyWebsite: "www.TestCompany.com",
-                            companyEmail: "TestCompany@email.com",
-                            tinNumber: "TIN001",
-                            cstNumber: "CST01",
-                            panNumber: "ASDF1234S",
-                            comapanyAddress: "TestCompanyAdress",
-                            offlicePhNumber: "999999"
+                            companyName: "",
+                            companyWebsite: "",
+                            companyEmail: "",
+                            tinNumber: "",
+                            cstNumber: "",
+                            panNumber: "",
+                            comapanyAddress: "",
+                            offlicePhNumber: ""
 
                         };
                     });
@@ -47,17 +47,17 @@ imsappctrl.controller('dealerCtrl',
                 };
                 $scope.SaveOrUpdate = function () {
                     var data = angular.toJson($scope.Dealer, null);
-                    alert(data);
+//                    alert(data);
                     if ($scope.SAVE_UPDATE_DELETE_FLAG === "Save")
                         dealerService.addNewDealer(data, function (response) {
-                            alert("New Dealer Added " + response);
+                            AlertService.showAlert(this,"Info","New Dealer Added Successfully","OK");
                             $scope.Dealer = null;
                             $scope.getDealerNo();
 
                         });
                     if ($scope.SAVE_UPDATE_DELETE_FLAG === "Update")
                         dealerService.updateDealer(data, function (response) {
-                            alert("Dealer Info Updated " + response);
+                            AlertService.showAlert(this,"Info","Dealer Info updated Successfully","OK");
                             $scope.Dealer = null;
                             $scope.selectedIndex = 1;
 

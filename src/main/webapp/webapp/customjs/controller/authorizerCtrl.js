@@ -12,8 +12,8 @@
 
 
 imsappctrl.controller('authorizerCtrl',
-        ['$scope', '$timeout', '$log', '$mdMedia', 'authorizerService', 'dealerService', 'supplierService',
-            function ($scope, $timeout, $log, $mdMedia, authorizerService, dealerService, supplierService) {
+        ['$scope', '$timeout', '$log', '$mdMedia', 'authorizerService', 'dealerService', 'supplierService','AlertService',
+            function ($scope, $timeout, $log, $mdMedia, authorizerService, dealerService, supplierService,AlertService) {
                 var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
                 $scope.selectedTab = 1;
                 $scope.Authorizer = {};
@@ -61,11 +61,11 @@ imsappctrl.controller('authorizerCtrl',
 
                         $scope.Authorizer = {
                             authorizerId: response,
-                            authorizername: "www.TestCompany.com",
-                            phoneno: "123456789",
-                            emailid: "TIN001",
-                            pannumber: "CST01",
-                            otherDetails: "ASDF1234S",
+                            authorizername: "",
+                            phoneno: "",
+                            emailid: "",
+                            pannumber: "",
+                            otherDetails: "",
                             authorizerFor: $scope.Authorizer.authorizerFor
 
 
@@ -100,18 +100,21 @@ imsappctrl.controller('authorizerCtrl',
                 $scope.SaveOrUpdate = function () {
                     console.log($scope.Authorizer.dealerorsupplierno);
                     var data = angular.toJson($scope.Authorizer, null);
-                    alert(data);
+                    console.log(data);
                     if ($scope.Authorizer.authorizerFor === "Dealer") {
                         if ($scope.SAVE_UPDATE_DELETE_FLAG === "Save")
                             authorizerService.addNewDealerAuthorizer(data, function (response) {
-                                alert("New Authorizer Added " + response);
+                                
+                                //alert("New Authorizer Added " + response);
+                                AlertService.showAlert(this,"Info","New Authorizer Added Successfully","OK");
                                 $scope.Authorizer = null;
                                 $scope.getAuthorizerNo();
                             });
 
                         if ($scope.SAVE_UPDATE_DELETE_FLAG === "Update")
                             authorizerService.updateDealerAuthorizer(data, function (response) {
-                                alert("Authorizer Info Updated " + response);
+                                AlertService.showAlert(this,"Info","Authorizer Info Updated Successfully","OK");
+                                //alert("Authorizer Info Updated " + response);
 //                                $scope.Authorizer = null;
 //                                $scope.Authorizer.authorizerFor="Dealer";
                                 $scope.selectedIndex = 1;
@@ -120,14 +123,14 @@ imsappctrl.controller('authorizerCtrl',
                     if ($scope.Authorizer.authorizerFor === "Supplier") {
                         if ($scope.SAVE_UPDATE_DELETE_FLAG === "Save")
                             authorizerService.addNewSupplierAuthorizer(data, function (response) {
-                                alert("New Authorizer Added " + response);
+                                AlertService.showAlert(this,"Info","New Authorizer Added Successfully","OK");
 //                                $scope.Authorizer = null;
                                 $scope.getAuthorizerNo();
                             });
 
                         if ($scope.SAVE_UPDATE_DELETE_FLAG === "Update")
                             authorizerService.updateSupplierAuthorizer(data, function (response) {
-                                alert("Authorizer Info Updated " + response);
+                                AlertService.showAlert(this,"Info","Authorizer Info Updated Successfully","OK");
 //                                $scope.Authorizer = null;
 //                                $scope.Authorizer.authorizerFor="Supplier";
                                 $scope.selectedIndex = 1;
