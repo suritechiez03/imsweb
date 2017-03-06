@@ -47,7 +47,7 @@ imsappctrl.config(function ($stateProvider, $urlRouterProvider) {
                 controller: 'homeCtrl'
             })
             .state('home.managetransaction', {
-                url: '/managetransaction',
+                url: '/managetransaction', 
                 templateUrl: 'pages/ManageTransaction.html',
                 controller: 'homeCtrl'
             });

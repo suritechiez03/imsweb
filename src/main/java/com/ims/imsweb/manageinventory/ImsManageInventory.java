@@ -19,6 +19,7 @@ import org.ims.transactionEngine.InventoryService.ProductCategoryService;
 import org.ims.transactionEngine.InventoryService.ProductService;
 import org.ims.transactionEngine.model.ProductCategoryModel;
 import org.ims.transactionEngine.model.ProductModel;
+import org.ims.transactionEngine.model.StockModel;
 import org.ims.transactionEngine.securityManager.ApplicationUtil;
 import org.ims.transactionEngine.securityManager.Loginservice;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -152,8 +154,24 @@ public class ImsManageInventory {
 
                 return new ResponseEntity<>(productlist, HttpStatus.OK);
             }
-        } catch (Exception E) {
+        } catch (Exception E) { 
             log.error("getProduct() -- Fetching product Details" + E.getMessage());
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
+    }
+    @RequestMapping(value = "/getStockdetails", method = RequestMethod.POST,produces = "application/json")
+    public ResponseEntity<StockModel> getStockdetails(HttpServletRequest request, HttpServletResponse response,@RequestBody String data) {
+        log.info("getStockdetails() -- Fetching stock Details");
+        HttpSession hs = request.getSession();
+
+        try {
+            StockModel stockdet = productservice.getStockDetails(data);
+            if (stockdet!=null) {
+
+                return new ResponseEntity<>(stockdet, HttpStatus.OK);
+            }
+        } catch (Exception E) {
+            log.error("getStockdetails() -- Fetching stock Details" + E.getMessage());
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
     }

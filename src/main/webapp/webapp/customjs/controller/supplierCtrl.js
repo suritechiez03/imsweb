@@ -48,7 +48,7 @@ imsappctrl.controller('supplierCtrl',
                 }
                 $scope.SaveOrUpdate = function () {
                     var data = angular.toJson($scope.Supplier, null);
-                    alert(data);
+//                    alert(data);
                     if ($scope.SAVE_UPDATE_DELETE_FLAG === "Save")
                         supplierService.addNewSupplier(data, function (response) {
                             AlertService.showAlert(this,"Info","New Supplier Added Successfully","OK");

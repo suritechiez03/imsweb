@@ -6,8 +6,8 @@
 'use strict';
 
 imsappctrl.factory('ManageInvoiceService',
-        ['$http', '$cookieStore', '$rootScope', '$timeout','$window',
-            function ($http, $cookieStore, $rootScope, $timeout,$window) {
+        ['$http', '$cookieStore', '$rootScope', '$timeout', '$window',
+            function ($http, $cookieStore, $rootScope, $timeout, $window) {
                 var service = {};
 
                 service.ProcessInvoice = function (invoiceDetails, callback) {
@@ -32,24 +32,35 @@ imsappctrl.factory('ManageInvoiceService',
                                 callback("FAILED");
                             });
                 };
-                service.getSalesPDF=function(invoice){
-                    
-                    $http.get('/IMSWEB/IMS_ReportService?OPETYPE=5&InvoiceNo='+invoice.InvoiceNo +'&filename=RptSalesInvoice', {responseType: 'arraybuffer'})
+                service.getSalesPDF = function (invoice) {
+
+                    $http.get('/IMSWEB/IMS_ReportService?OPETYPE=5&InvoiceNo=' + invoice.InvoiceNo + '&filename=RptSalesInvoice', {responseType: 'arraybuffer'})
                             .success(function (data) {
                                 var file = new Blob([data], {type: 'application/pdf'});
                                 var fileURL = URL.createObjectURL(file);
                                 $window.open(fileURL);
                             });
                 }
-                 service.getPurchasePDF=function(invoice){
-                    
-                    $http.get('/IMSWEB/IMS_ReportService?OPETYPE=5&InvoiceNo='+invoice.InvoiceNo +'&filename=RptPurchaseInvoice', {responseType: 'arraybuffer'})
+                service.getPurchasePDF = function (invoice) {
+
+                    $http.get('/IMSWEB/IMS_ReportService?OPETYPE=5&InvoiceNo=' + invoice.InvoiceNo + '&filename=RptTaxInvoice', {responseType: 'arraybuffer'})
                             .success(function (data) {
                                 var file = new Blob([data], {type: 'application/pdf'});
                                 var fileURL = URL.createObjectURL(file);
                                 $window.open(fileURL);
                             });
                 }
+                service.getInvoiceDetails = function (invoiceno, callback) {
+                    $http.post('/IMSWEB/getSalesInvoiceNo', invoiceno, {headers: {'Content-Type': 'text/html; charset=UTF-8'}})
+                            .success(function (response) {
+                                console.log("Getting Invoice Info...........................");
+                                callback(response);
+                            })
+                            .error(function (response) {
+                                console.log("Failed to recive Invoice Info...........................");
+                                callback("FAILED");
+                            });
+                };
                 return service;
             }
         ]);

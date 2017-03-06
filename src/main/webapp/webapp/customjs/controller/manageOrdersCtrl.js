@@ -49,8 +49,23 @@ imsappctrl.controller('manageOrdersCtrl',
 //                    product.stockdetail
                     product.orderQuantity = qty;
                     if ($scope.selectedproductlist.indexOf(product) === -1){
-                        $scope.selectedproductlist.push(product);
-                        $scope.orderQuantity = 0;
+                          if ($scope.ManageOrder.OrderFor === "Dealer") {
+                            ManageProductService.isStockAvailable(product.productcode, product.orderQuantity, function (response) {
+                                if(response){
+                                $scope.selectedproductlist.push(product);
+                                $scope.orderQuantity = 0;
+                            }
+                            });
+
+                        }
+                        if ($scope.ManageOrder.OrderFor === "Supplier") {
+
+                            $scope.selectedproductlist.push(product);
+                            $scope.orderQuantity = 0;
+
+                        }
+//                        $scope.selectedproductlist.push(product);
+//                        $scope.orderQuantity = 0;
                     }else{
                         AlertService.showAlert(this,"","Item Already Exists","OK");
                     }

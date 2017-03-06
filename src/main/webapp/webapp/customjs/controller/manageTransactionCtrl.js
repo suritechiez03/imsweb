@@ -11,7 +11,10 @@ imsappctrl.controller('manageTransactionCtrl',
                 $scope.PaymentMethodOptions = ('Cash Cheque Card').split(' ').map(function (state) {
                     return {abbrev: state};
                 });
-                
+                $scope.init=function(){
+//                    alert('hi' + $location.search().InvoiceNo);
+                    $scope.ManageTransaction.InvoiceNo=$location.search().InvoiceNo;
+                };
             }
         ]);
         

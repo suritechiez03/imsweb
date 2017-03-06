@@ -117,15 +117,32 @@ imsappctrl.controller('manageInvoicesCtrl',
                     product.DealerPrice = 0.0;
 
                     if ($scope.selectedproductlist.indexOf(product) === -1) {
-                        $scope.selectedproductlist.push(product);
-                        $scope.orderQuantity = 0;
+                        if ($scope.ManageInvoice.InvoiceFor === "Dealer") {
+                            ManageProductService.isStockAvailable(product.productcode, product.orderQuantity, function (response) {
+                                if(response){
+                                $scope.selectedproductlist.push(product);
+                                $scope.orderQuantity = 0;
+                            }
+                            });
+
+                        }
+                        if ($scope.ManageInvoice.InvoiceFor === "Supplier") {
+
+                            $scope.selectedproductlist.push(product);
+                            $scope.orderQuantity = 0;
+
+                        }
 
                     } else {
-                        AlertService.showAlert(this, "", "Item Already Exists", "OK");
+                        AlertService.showAlert(this, "Info", "Item Already Exists", "OK");
                     }
 
                     console.log($scope.selectedproductlist);
                 };
+                ManageProductService.getProductList(function (response) {
+                    console.log(JSON.stringify(response));
+                    $scope.productlist = response;
+                });
                 $scope.updateTotal = function (item) {
 
                     item.TotalPrice = (item.orderQuantity * item.UnitPrice);
@@ -239,12 +256,13 @@ imsappctrl.controller('manageInvoicesCtrl',
                             {
                                 ManageInvoiceService.getSalesPDF($scope.ManageInvoice);
                             }
-
+                            $location.path('/home/managetransaction?InvoiceNo='+$scope.ManageInvoice.InvoiceNo);
                             $scope.selectedproductlist = [];
                             $scope.ManageInvoice.products = [];
                             $scope.ManageInvoice = "";
                             $scope.selectedIndex = 1;
                             $scope.initInvoiceFrm();
+                            
 
                         } else {
                             AlertService.showAlert(this, "New Order", "Unable to Recive order for " + $scope.ManageInvoice.dealerorsupplierno, "ok");

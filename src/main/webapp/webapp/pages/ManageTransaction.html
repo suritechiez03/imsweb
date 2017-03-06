@@ -1,4 +1,4 @@
-<div ng-controller="manageTransactionCtrl" data-ng-init="" flex>
+<div ng-controller="manageTransactionCtrl" ng-init="init();" flex>
     <md-content flex>
         <md-tabs md-dynamic-height md-border-bottom md-selected="selectedIndex"> 
             <md-tab id="tab1" label="Payment">
@@ -12,15 +12,15 @@
                         <div layout-gt-xs="row">
                             <md-input-container class="md-block" flex-gt-xs>
                                 <label> Invoice No : </label>
-                                <input type="text" ng-model="ManageTransaction.InvoiceNo" required >
+                                <input type="text" ng-model="ManageTransaction.InvoiceNo" required>
                             </md-input-container>
                         </div>
-                        <div layout-gt-xs="row">
-                            <md-input-container class="md-block" flex-gt-xs>
+                        <!--<div layout-gt-xs="row">-->
+                            <!--<md-input-container class="md-block" flex-gt-xs>-->
                                 <label> Transaction Date : </label>
-                                <md-datepicker ng-model="ManageTransaction.TransactionDate" md-placeholder="Enter date" valid required></md-datepicker>
-                            </md-input-container>
-                        </div>
+                                <md-datepicker ng-model="ManageTransaction.TransactionDate" md-placeholder="Date :" valid required></md-datepicker>
+                            <!--</md-input-container>-->
+                        <!--</div>-->
                         <div layout-gt-xs="row">
                             <md-input-container class="md-block" flex-gt-xs>
                                 <md-select ng-model="ManageTransaction.PaymentMethod" ng-change="" required>
