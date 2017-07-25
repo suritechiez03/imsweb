@@ -198,7 +198,7 @@
                                                     <th md-column md-numeric>Quantity</th>   
                                                     <th md-column md-numeric>Unit Price</th>   
                                                     <th md-column md-numeric>Discount %</th>  
-                                                    <th md-column md-numeric>VAT %</th>  
+                                                    <th md-column md-numeric>GST %</th>  
                                                     <th md-column md-numeric>Total Price</th> 
                                                     <th md-column md-numeric ng-show="PurchaseInvoice">Margin %</th> 
                                                     <th md-column md-numeric ng-show="PurchaseInvoice">Margin Amt</th> 
@@ -216,16 +216,9 @@
                                             <td md-cell>{{item.orderQuantity}}</td>
                                             <td md-cell><input ng-model="selectedproductlist[$index].UnitPrice" type="number"  step="0.01" ng-change="updateTotal(item);"></td>
                                             <td md-cell><input ng-model="selectedproductlist[$index].Discount" type="number"  step="0.1"  ng-change="updateTotal(item);"></td>
-                                            <td md-cell  ng-show="PurchaseInvoice">
+                                            <td md-cell >
                                                 <input ng-model="selectedproductlist[$index].VAT" type="number"  step="0.01"     ng-change="updateTotal(item);">
 
-                                            </td>
-                                            <td md-cell ng-show="SaleInvoice" >
-                                            <md-select  ng-model="selectedproductlist[$index].VAT" ng-change="updateTotal(item);" required>
-                                                <md-option ng-repeat="option in VATList" value="{{option}}">
-                                                    <span style="color: blue">{{option}} </span>
-                                                </md-option>
-                                            </md-select>
                                             </td>
                                             <td md-cell><b>{{item.TotalPrice}}</b> </td>
                                             <td md-cell ng-show="PurchaseInvoice"><input ng-model="selectedproductlist[$index].MarginPrecnt" type="number"  step="0.01"  ng-change="updateTotal(item);"></td>
@@ -242,58 +235,13 @@
                         <md-card>
                             <md-card-title>
                                 <md-table-container>
-                                    <table md-table>
+                                    <table md-table flex>
                                         <tbody md-body>
-                                            <tr md-row>
-                                                <td md-cell>Frieght and Forwarding Charges :</td>
+                                            <tr md-row ng-repeat="rowContent in DynamicTblGST">
+                                                <td md-cell>{{rowContent.type}} @ </td>
+                                                <td md-cell>{{rowContent.taxrate}} %</td>
                                                 <td md-cell><span flex></span></td>
-                                                <td md-cell></td>
-                                                <td md-cell> <input ng-model="ManageInvoice.FAFcharges" type="number" string-to-number  step="0.01"  ng-change="CalcuateCharges();" > 
-                                                </td>
-                                            </tr>
-                                            <tr md-row>
-                                                <td md-cell>Gross Amount :</td>
-                                                <td md-cell><span flex></span></td>
-                                                <td md-cell></td>
-                                                <td md-cell> <input ng-model="ManageInvoice.GrossAmount" type="number"  string-to-number step="0.01" value="0" readonly > 
-                                                </td>
-                                            </tr>
-                                            <tr md-row>
-                                                <td md-cell>Excise Duty @  </td>
-                                                <td md-cell><span flex><input ng-model="ManageInvoice.excessPercentage" type="number"  string-to-number step="0.01" ng-change="CalcuateCharges();"></span></td>
-                                                <td md-cell> <label>Excise Rate :</label> </td>
-                                                <td md-cell> <input ng-model="ManageInvoice.excessRate" type="number" string-to-number  step="0.01" value="0" readonly > 
-                                                </td>
-                                            </tr>
-                                            <tr md-row>
-                                                <td md-cell>Education Cess @ </td>
-                                                <td md-cell><span flex><input ng-model="ManageInvoice.educationCessPercentage" type="number" string-to-number  step="0.01" ng-change="CalcuateCharges();"></span></td>
-                                                <td md-cell> <label>Education Cess Rate :</label> </td>
-                                                <td md-cell><input ng-model="ManageInvoice.educationCessRate"type="number" string-to-number  step="0.01" value="0" readonly></td>
-                                            </tr>
-                                            <tr md-row>
-                                                <td md-cell>Sec. Education Cess @ </td>
-                                                <td md-cell><span flex><input ng-model="ManageInvoice.secondaryEducationCessPercentage" type="number"  string-to-number step="0.01" ng-change="CalcuateCharges();" ></span></td>
-                                                <td md-cell> <label>Sec. Education Cess Rate :</label> </td>
-                                                <td md-cell><input ng-model="ManageInvoice.secondaryEducationCessRate" type="number"  string-to-number step="0.01" value="0" readonly></td>
-                                            </tr>
-                                            <tr md-row>
-                                                <td md-cell>CST Percentage @ </td>
-                                                <td md-cell><span flex><input ng-model="ManageInvoice.CSTPercentage" type="number" string-to-number  step="0.01" ng-change="CalcuateCharges();"  ></span></td>
-                                                <td md-cell> <label>CST Rate :</label> </td>
-                                                <td md-cell><input ng-model="ManageInvoice.CSTRate" type="number" string-to-number  step="0.01" value="0" readonly ></td>
-                                            </tr>
-                                            <tr md-row>
-                                                <td md-cell>VAT  @ </td>
-                                                <td md-cell><span flex><input ng-model="ManageInvoice.VAT1" type="number"  string-to-number step="0.01" ng-change="CalcuateCharges();"  ></span></td>
-                                                <td md-cell> <label> %</label> </td>
-                                                <td md-cell><input ng-model="ManageInvoice.Vat1Rate" type="number" string-to-number  step="0.01" readonly></td>
-                                            </tr>
-                                            <tr md-row ng-show="SaleInvoice">
-                                                <td md-cell>VAT @ </td>
-                                                <td md-cell><span flex><input ng-model="ManageInvoice.VAT2" type="number" string-to-number  step="0.01" ng-change="CalcuateCharges();" ></span></td>
-                                                <td md-cell> <label>%</label> </td>
-                                                <td md-cell><input ng-model="ManageInvoice.Vat2Rate" type="number"  string-to-number step="0.01" readonly></td>
+                                                <td md-cell>{{rowContent.taxprice}}</td>
                                             </tr>
                                             <tr md-row>
                                                 <td md-cell>Round Off : </td>
@@ -307,7 +255,72 @@
                                                 <td md-cell> <label></label></td>
                                                 <td md-cell><h2 style="color: brown"> <span id="currency-default">{{ManageInvoice.FinalAmount| currency:"&#8377;"}}</span></h2></td>
                                             </tr>
+    
+                                            <!--                                            <tr md-row>
+                                                                                            <td md-cell>Frieght and Forwarding Charges :</td>
+                                                                                            <td md-cell><span flex></span></td>
+                                                                                            <td md-cell></td>
+                                                                                            <td md-cell> <input ng-model="ManageInvoice.FAFcharges" type="number" string-to-number  step="0.01"  ng-change="CalcuateCharges();" > 
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr md-row>
+                                                                                            <td md-cell>Gross Amount :</td>
+                                                                                            <td md-cell><span flex></span></td>
+                                                                                            <td md-cell></td>
+                                                                                            <td md-cell> <input ng-model="ManageInvoice.GrossAmount" type="number"  string-to-number step="0.01" value="0" readonly > 
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr md-row>
+                                                                                            <td md-cell>Excise Duty @  </td>
+                                                                                            <td md-cell><span flex><input ng-model="ManageInvoice.excessPercentage" type="number"  string-to-number step="0.01" ng-change="CalcuateCharges();"></span></td>
+                                                                                            <td md-cell> <label>Excise Rate :</label> </td>
+                                                                                            <td md-cell> <input ng-model="ManageInvoice.excessRate" type="number" string-to-number  step="0.01" value="0" readonly > 
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr md-row>
+                                                                                            <td md-cell>Education Cess @ </td>
+                                                                                            <td md-cell><span flex><input ng-model="ManageInvoice.educationCessPercentage" type="number" string-to-number  step="0.01" ng-change="CalcuateCharges();"></span></td>
+                                                                                            <td md-cell> <label>Education Cess Rate :</label> </td>
+                                                                                            <td md-cell><input ng-model="ManageInvoice.educationCessRate"type="number" string-to-number  step="0.01" value="0" readonly></td>
+                                                                                        </tr>
+                                                                                        <tr md-row>
+                                                                                            <td md-cell>Sec. Education Cess @ </td>
+                                                                                            <td md-cell><span flex><input ng-model="ManageInvoice.secondaryEducationCessPercentage" type="number"  string-to-number step="0.01" ng-change="CalcuateCharges();" ></span></td>
+                                                                                            <td md-cell> <label>Sec. Education Cess Rate :</label> </td>
+                                                                                            <td md-cell><input ng-model="ManageInvoice.secondaryEducationCessRate" type="number"  string-to-number step="0.01" value="0" readonly></td>
+                                                                                        </tr>
+                                                                                        <tr md-row>
+                                                                                            <td md-cell>CST Percentage @ </td>
+                                                                                            <td md-cell><span flex><input ng-model="ManageInvoice.CSTPercentage" type="number" string-to-number  step="0.01" ng-change="CalcuateCharges();"  ></span></td>
+                                                                                            <td md-cell> <label>CST Rate :</label> </td>
+                                                                                            <td md-cell><input ng-model="ManageInvoice.CSTRate" type="number" string-to-number  step="0.01" value="0" readonly ></td>
+                                                                                        </tr>
+                                                                                        <tr md-row>
+                                                                                            <td md-cell>VAT  @ </td>
+                                                                                            <td md-cell><span flex><input ng-model="ManageInvoice.VAT1" type="number"  string-to-number step="0.01" ng-change="CalcuateCharges();"  ></span></td>
+                                                                                            <td md-cell> <label> %</label> </td>
+                                                                                            <td md-cell><input ng-model="ManageInvoice.Vat1Rate" type="number" string-to-number  step="0.01" readonly></td>
+                                                                                        </tr>
+                                                                                        <tr md-row ng-show="SaleInvoice">
+                                                                                            <td md-cell>VAT @ </td>
+                                                                                            <td md-cell><span flex><input ng-model="ManageInvoice.VAT2" type="number" string-to-number  step="0.01" ng-change="CalcuateCharges();" ></span></td>
+                                                                                            <td md-cell> <label>%</label> </td>
+                                                                                            <td md-cell><input ng-model="ManageInvoice.Vat2Rate" type="number"  string-to-number step="0.01" readonly></td>
+                                                                                        </tr>
+                                                                                        <tr md-row>
+                                                                                            <td md-cell>Round Off : </td>
+                                                                                            <td md-cell><span flex></span></td>
+                                                                                            <td md-cell> <label></label></td>
+                                                                                            <td md-cell><input ng-model="ManageInvoice.RoundOff" type="number" string-to-number step="0.01" ng-change="CalcuateCharges();" ></td>
+                                                                                        </tr>
+                                                                                        <tr md-row>
+                                                                                            <td md-cell><h2>Total Amount  :</h2> </td>
+                                                                                            <td md-cell><span flex></span></td> 
+                                                                                            <td md-cell> <label></label></td>
+                                                                                            <td md-cell><h2 style="color: brown"> <span id="currency-default">{{ManageInvoice.FinalAmount| currency:"&#8377;"}}</span></h2></td>
+                                                                                        </tr>-->
                                         </tbody>
+                                        
                                     </table>
                                 </md-table-container>
                             </md-card-title>
@@ -316,6 +329,39 @@
                                 <md-button  class="md-raised md-primary" ng-click="SubmitInvoice();">Confirm</md-button>
                             </md-card-actions>
                         </md-card>
+                    </md-tab>
+                    <md-tab id="tab3"  label="View Invoice" ng-click="loadInvoice();">
+                        <div layout-gt-xs="row">
+                            <md-card flex>
+                                <md-table-container> 
+                                    <table md-table md-row-select multiple ng-model="selected">
+                                        <thead md-head  md-order="query.invoice">
+                                            <tr md-row>
+
+                                                <th md-column md-order-by="InvoiceNo">Invoice No</th>
+                                                <th md-column md-order-by="Invoicedate">Invoice Date</th>
+                                                <th md-column md-order-by="InvoiceFor">Invoice For</th>
+                                                <th md-column md-order-by="FinalAmount">Amount</th>   
+                                                <th md-column md-order-by="invoiceStatus">Status</th>   
+                                                <th md-column >Payment Status</th> 
+                                                <th md-column ></th> 
+                                            </tr>
+                                        </thead> 
+                                        <tbody md-body>
+                                            <tr md-row ng-repeat="item in invoicelist| filter: filter.search | orderBy: query.invoice">
+                                                <td md-cell>{{item.InvoiceNo}}</td>
+                                                <td md-cell>{{item.Invoicedate| date:'dd-MMM-yyyy'}}</td>
+                                                <td md-cell>{{item.InvoiceFor}}</td>
+                                                <td md-cell>{{item.FinalAmount|currency:"&#8377;"}}</td>
+                                                <td md-cell>{{item.invoiceStatus ==1 ? "Invoice Raised":(item.invoiceStatus ==2) ? "Partial Payment":"Cleared" }}</td>
+                                                <td md-cell><md-button class="md-primary" ng-disabled="{{item.invoiceStatus ==3?true:false;}}"  ng-click="proccedforpayment(item.InvoiceNo);" >Make Payment</md-button></td>
+                                        <td md-cell><md-button class="md-raised md-primary"  ng-click="downloadInvoice(item);" >Download</md-button></td>
+
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                            </md-card>
+                        </div>
                     </md-tab>
                 </md-tabs>
             </form> 

@@ -53,12 +53,12 @@ public class ImsOrderManagement {
             HttpSession hs = request.getSession();
             ordermodel =objm.readValue(orderdetails, OrderManagementModel.class);
             ordermodel.setEnteredDate(ApplicationUtil.getDate());
-            ordermodel.setGeneratedOrderNo(orderservice.saveOrder(ordermodel,loginservice.getLoggedinUserinfo(hs.getAttribute("UserName").toString())));
+            ordermodel.setGeneratedOrderNo(orderservice.saveOrder(ordermodel,loginservice.getLoggedinUserinfo(hs.getAttribute("UserName").toString()),2).getGeneratedOrderNo());
             return new ResponseEntity(ordermodel,HttpStatus.OK);
-        } catch (IOException | ParseException ex) {
-            java.util.logging.Logger.getLogger(ImsOrderManagement.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
             return new ResponseEntity<>(ordermodel,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        } 
         
     }
     
@@ -69,7 +69,7 @@ public class ImsOrderManagement {
             
             return new ResponseEntity<>(orderservice.getOrderList("ALL",""),HttpStatus.OK);
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(ImsOrderManagement.class.getName()).log(Level.SEVERE, null, ex);
+            log.error(ex.getMessage(), ex);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         
@@ -82,7 +82,7 @@ public class ImsOrderManagement {
             
             return new ResponseEntity<>(orderservice.getOrderList("OrderRaisedBy",Value),HttpStatus.OK);
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(ImsOrderManagement.class.getName()).log(Level.SEVERE, null, ex);
+            log.error(ex.getMessage(), ex);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         

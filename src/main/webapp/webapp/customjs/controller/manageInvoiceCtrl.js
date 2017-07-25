@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 imsappctrl.controller('manageInvoicesCtrl',
-        ['$scope', '$rootScope', '$timeout', '$window', '$mdDialog', '$log', '$mdMedia', '$location', '$filter', 'ManageOrderService', 'dealerService', 'supplierService', 'ManageProductService', 'AlertService', 'GeneralDefinitionService', 'ManageInvoiceService',
-            function ($scope, $rootScope, $window, $timeout, $mdDialog, $log, $mdMedia, $location, $filter, ManageOrderService, dealerService, supplierService, ManageProductService, AlertService, GeneralDefinitionService, ManageInvoiceService) {
+        ['$scope', '$rootScope', '$compile', '$timeout', '$window', '$mdDialog', '$log', '$mdMedia', '$location', '$filter', 'ManageOrderService', 'dealerService', 'supplierService', 'ManageProductService', 'AlertService', 'GeneralDefinitionService', 'ManageInvoiceService',
+            function ($scope, $rootScope, $compile, $window, $timeout, $mdDialog, $log, $mdMedia, $location, $filter, ManageOrderService, dealerService, supplierService, ManageProductService, AlertService, GeneralDefinitionService, ManageInvoiceService) {
                 $scope.selectedproductlist = [];
 
                 $scope.ManageInvoice = {products: ''};
@@ -119,10 +119,10 @@ imsappctrl.controller('manageInvoicesCtrl',
                     if ($scope.selectedproductlist.indexOf(product) === -1) {
                         if ($scope.ManageInvoice.InvoiceFor === "Dealer") {
                             ManageProductService.isStockAvailable(product.productcode, product.orderQuantity, function (response) {
-                                if(response){
-                                $scope.selectedproductlist.push(product);
-                                $scope.orderQuantity = 0;
-                            }
+                                if (response) {
+                                    $scope.selectedproductlist.push(product);
+                                    $scope.orderQuantity = 0;
+                                }
                             });
 
                         }
@@ -147,7 +147,7 @@ imsappctrl.controller('manageInvoicesCtrl',
 
                     item.TotalPrice = (item.orderQuantity * item.UnitPrice);
                     item.TotalPrice = item.TotalPrice - ((item.TotalPrice * item.Discount) / 100);
-                    item.TotalPrice = $scope.fixedto4digit(item.TotalPrice + ((item.TotalPrice * item.VAT) / 100));
+                    item.TotalPrice = $scope.fixedto4digit(item.TotalPrice);
                     item.MarginAmt = $scope.fixedto4digit(((item.UnitPrice * item.MarginPrecnt) / 100));
                     item.DealerPrice = $scope.fixedto4digit(item.UnitPrice + item.MarginAmt);
                     $scope.CalcuateCharges();
@@ -156,44 +156,49 @@ imsappctrl.controller('manageInvoicesCtrl',
 
                 };
                 $scope.CalcuateCharges = function () {
-                    var grossamt = 0
-                    var totalPrice = 0;
-                    var totalTax = 0; //VAT1
+                    var grossamt = 0;
+                    var CheckTaxAlreadyAdded = 0; //VAT1
                     var totalTax2 = 0;  //VAT 2
                     var roundoff = 0;
+                    var finaltax = 0;
+                    $scope.DynamicTblGST = [];
                     for (i = 0; i < $scope.selectedproductlist.length; i++) {
+                        totalTax2 = ($scope.selectedproductlist[i].TotalPrice * $scope.selectedproductlist[i].VAT) / 100;
+                        if ($scope.selectedproductlist[i].VAT > 0 && CheckTaxAlreadyAdded !== $scope.selectedproductlist[i].VAT) {
 
-                        grossamt = grossamt + $scope.selectedproductlist[i].TotalPrice;
-                        totalPrice = ($scope.selectedproductlist[i].orderQuantity * $scope.selectedproductlist[i].UnitPrice);
-                        totalPrice = totalPrice - (totalPrice * $scope.selectedproductlist[i].Discount) / 100;
-                        if ($scope.PurchaseInvoice == true) {
-                            totalTax = (totalTax + ((totalPrice * $scope.selectedproductlist[i].VAT) / 100));
+                            $scope.DynamicTblGST.push({taxrate: ($scope.selectedproductlist[i].VAT / 2), taxprice: (totalTax2 / 2), type: "SGST", tax: $scope.selectedproductlist[i].VAT});
+                            $scope.DynamicTblGST.push({taxrate: ($scope.selectedproductlist[i].VAT / 2), taxprice: (totalTax2 / 2), type: "CGST", tax: $scope.selectedproductlist[i].VAT});
+                            CheckTaxAlreadyAdded = $scope.selectedproductlist[i].VAT;
+                            grossamt = grossamt + $scope.selectedproductlist[i].TotalPrice;
+                        } else
+                        {
+                            $scope.DynamicTblGST.filter(function (item) {
+                                return item.taxrate === $scope.selectedproductlist[i].VAT / 2;
+                            })
+                                    .map(function (item) {
+                                        item.taxprice = item.taxprice + (totalTax2 / 2);
+                                        return item;
+                                    });
                         }
-                        if ($scope.SaleInvoice == true) {
-                            if (parseFloat($scope.selectedproductlist[i].VAT) === $scope.ManageInvoice.VAT1) {
-                                totalTax = (totalTax + ((totalPrice * $scope.selectedproductlist[i].VAT) / 100));
-                            }
-                            if (parseFloat($scope.selectedproductlist[i].VAT) === $scope.ManageInvoice.VAT2) {
-                                totalTax2 = (totalTax2 + ((totalPrice * $scope.selectedproductlist[i].VAT) / 100));
-                            }
-                        }
-
+                        finaltax = finaltax + totalTax2; // calculate and add tax for each row     
                     }
-                    grossamt = $scope.fixedto4digit((grossamt + $scope.ManageInvoice.FAFcharges));
-                    $scope.ManageInvoice.GrossAmount = $scope.fixedto4digit(grossamt);
-                    $scope.ManageInvoice.excessRate = $scope.fixedto4digit((grossamt * $scope.ManageInvoice.excessPercentage) / 100);
-                    $scope.ManageInvoice.CSTRate = $scope.fixedto4digit((grossamt * $scope.ManageInvoice.CSTPercentage) / 100);
-                    $scope.ManageInvoice.educationCessRate = $scope.fixedto4digit((grossamt * $scope.ManageInvoice.educationCessPercentage) / 100);
-                    $scope.ManageInvoice.secondaryEducationCessRate = $scope.fixedto4digit((grossamt * $scope.ManageInvoice.secondaryEducationCessPercentage) / 100);
-                    $scope.ManageInvoice.Vat1Rate = $scope.fixedto4digit(totalTax);
-                    roundoff = parseFloat(grossamt) + parseFloat($scope.ManageInvoice.excessRate) + parseFloat($scope.ManageInvoice.CSTRate) + parseFloat($scope.ManageInvoice.educationCessRate) + parseFloat($scope.ManageInvoice.secondaryEducationCessRate) + parseFloat($scope.ManageInvoice.Vat1Rate);
-                    $scope.ManageInvoice.Vat2Rate = $scope.fixedto4digit(totalTax2);
-                    roundoff = parseFloat(grossamt) + parseFloat($scope.ManageInvoice.excessRate) + parseFloat($scope.ManageInvoice.CSTRate) + parseFloat($scope.ManageInvoice.educationCessRate) + parseFloat($scope.ManageInvoice.secondaryEducationCessRate) + parseFloat($scope.ManageInvoice.Vat1Rate) + parseFloat($scope.ManageInvoice.Vat2Rate);
 
+
+
+//                    grossamt = $scope.fixedto4digit((grossamt + $scope.ManageInvoice.FAFcharges));
+//                    $scope.ManageInvoice.GrossAmount = $scope.fixedto4digit(grossamt);
+//                    $scope.ManageInvoice.excessRate = $scope.fixedto4digit((grossamt * $scope.ManageInvoice.excessPercentage) / 100);
+//                    $scope.ManageInvoice.CSTRate = $scope.fixedto4digit((grossamt * $scope.ManageInvoice.CSTPercentage) / 100);
+//                    $scope.ManageInvoice.educationCessRate = $scope.fixedto4digit((grossamt * $scope.ManageInvoice.educationCessPercentage) / 100);
+//                    $scope.ManageInvoice.secondaryEducationCessRate = $scope.fixedto4digit((grossamt * $scope.ManageInvoice.secondaryEducationCessPercentage) / 100);
+//                    $scope.ManageInvoice.Vat1Rate = $scope.fixedto4digit(totalTax);
+//                    roundoff = parseFloat(grossamt) + parseFloat($scope.ManageInvoice.excessRate) + parseFloat($scope.ManageInvoice.CSTRate) + parseFloat($scope.ManageInvoice.educationCessRate) + parseFloat($scope.ManageInvoice.secondaryEducationCessRate) + parseFloat($scope.ManageInvoice.Vat1Rate);
+                    $scope.ManageInvoice.Vat2Rate = $scope.fixedto4digit(finaltax);
+                    roundoff = parseFloat(grossamt) + parseFloat($scope.ManageInvoice.Vat2Rate);
                     $scope.ManageInvoice.RoundOff = $scope.fixedto4digit($scope.fixedto4digit(roundoff) - $scope.fixedto4digit(Math.floor($scope.fixedto4digit(roundoff)))); //(Math.floor(parseFloat(roundoff).toFixed(4)) - parseFloat(roundoff).toFixed(4)).toFixed(4).toString();
                     $scope.ManageInvoice.FinalAmount = $scope.fixedto2digit(Math.floor(parseFloat(roundoff)));
 
-
+                    //angular.element(document.getElementById( 'tblCharges' ) ).html(DynamicTbl);
                 }
                 $scope.Remove = function (productIndex) {
                     $scope.selectedproductlist.splice(productIndex, 1);
@@ -210,7 +215,21 @@ imsappctrl.controller('manageInvoicesCtrl',
                         for (i = 0; i < $scope.ManageInvoice.SelectedOrder.products.length; i++) {
                             $scope.ManageInvoice.GeneratedOrderNo = $scope.ManageInvoice.SelectedOrder.generatedOrderNo;
                             $scope.ManageInvoice.orderNumber = $scope.ManageInvoice.SelectedOrder.orderNumber;
-                            $scope.AddtoCart($scope.ManageInvoice.SelectedOrder.products[i], $scope.ManageInvoice.SelectedOrder.products[i].orderQuantity);
+                            $scope.product = {};
+                            $scope.product.id = $scope.ManageInvoice.SelectedOrder.products[i].id;
+                            $scope.product.productcode = $scope.ManageInvoice.SelectedOrder.products[i].productcode;
+                            $scope.product.productname = $scope.ManageInvoice.SelectedOrder.products[i].productname;
+                            $scope.product.units = $scope.ManageInvoice.SelectedOrder.products[i].units;
+                            $scope.product.orderQuantity = $scope.ManageInvoice.SelectedOrder.products[i].orderQuantity;
+                            $scope.product.UnitPrice = $scope.ManageInvoice.SelectedOrder.products[i].UnitPrice;
+                            $scope.product.Discount = $scope.ManageInvoice.SelectedOrder.products[i].Discount;
+                            $scope.product.VAT = $scope.ManageInvoice.SelectedOrder.products[i].VAT;
+                            $scope.product.TotalPrice = $scope.ManageInvoice.SelectedOrder.products[i].TotalPrice;
+                            $scope.product.MarginPrecnt = $scope.ManageInvoice.SelectedOrder.products[i].MarginPrecnt;
+                            $scope.product.MarginAmt = $scope.ManageInvoice.SelectedOrder.products[i].MarginAmt;
+                            $scope.product.DealerPrice = $scope.ManageInvoice.SelectedOrder.products[i].DealerPrice;
+                            $scope.AddtoCart($scope.product, $scope.product.orderQuantity);
+                            $scope.ManageInvoice.SelectedOrder.products[i] = null;
                         }
 
                     }
@@ -256,13 +275,13 @@ imsappctrl.controller('manageInvoicesCtrl',
                             {
                                 ManageInvoiceService.getSalesPDF($scope.ManageInvoice);
                             }
-                            $location.path('/home/managetransaction?InvoiceNo='+$scope.ManageInvoice.InvoiceNo);
-                            $scope.selectedproductlist = [];
-                            $scope.ManageInvoice.products = [];
-                            $scope.ManageInvoice = "";
-                            $scope.selectedIndex = 1;
-                            $scope.initInvoiceFrm();
-                            
+                            $location.path('/home/managetransaction/' + $scope.ManageInvoice.InvoiceNo);
+//                            $scope.selectedproductlist = [];
+//                            $scope.ManageInvoice.products = [];
+//                            $scope.ManageInvoice = "";
+//                            $scope.selectedIndex = 1;
+//                            $scope.initInvoiceFrm();
+
 
                         } else {
                             AlertService.showAlert(this, "New Order", "Unable to Recive order for " + $scope.ManageInvoice.dealerorsupplierno, "ok");
@@ -271,9 +290,22 @@ imsappctrl.controller('manageInvoicesCtrl',
                     });
                 };
                 $scope.getPdf = function () {
-                    ManageInvoiceService.getPDF();
-                }
-
+//                    ManageInvoiceService.getPDF();
+                    $location.path('/home/managetransaction/' + $scope.ManageInvoice.InvoiceNo);
+                };
+                $scope.loadInvoice = function () {
+                    ManageInvoiceService.getInvoiceList($scope.ManageInvoice.InvoiceNo, function (response) {
+                        console.log(JSON.stringify(response));
+                        $scope.invoicelist = response;
+                    });
+//                    $scope.orderlist=ManageOrderService.getOrders();
+                };
+                $scope.downloadInvoice = function (invoice) {
+                    ManageInvoiceService.getPurchasePDF(invoice);
+                };
+                $scope.proccedforpayment = function (invoiceno) {
+                    $location.path('/home/managetransaction/' + invoiceno);
+                };
 
             }
         ]);

@@ -16,14 +16,14 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
-    <session-config>
+    <session-config> 
         <session-timeout>
             30
         </session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>/webapp/index.html</welcome-file>
-    </welcome-file-list>
+    </welcome-file-list>    
     <!-- CORS Filter -->
     <filter>
         <filter-name>cors</filter-name>

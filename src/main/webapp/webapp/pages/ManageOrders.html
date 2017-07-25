@@ -121,6 +121,7 @@
                                     <th md-column md-order-by="orderdate">Order Date</th>
                                     <th md-column md-order-by="OrderFor">Order For</th>
                                     <th md-column md-order-by="dealerorsupplierno">Supplier/Dealer</th>   
+                                    <th md-column md-order-by="orderstatus">Order Status</th>   
                                 </tr>
                             </thead> 
                             <tbody md-body>
@@ -134,6 +135,7 @@
                                     <td md-cell>{{item.orderdate| date:'dd-MMM-yyyy'}}</td>
                                     <td md-cell>{{item.OrderFor}}</td>
                                     <td md-cell>{{item.dealerorsupplierno}} : {{item.dealerorsuppliername}}</td>
+                                    <td md-cell>{{item.orderstatus == 1 ? "Order Raised":(item.orderstatus == 2)?"Order Raised and Invoice ":(item.orderstatus == 3)?"Cleared":"Cancelled";}}</td>
                                 </tr>
                                 <!--<td md-cell><md-button class="md-primary" ng-click="viewproducts(item.products);">View Products</md-button></td>-->
                             <td md-cell></td>

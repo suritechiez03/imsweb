@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RptTaxInvoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e480aa9e-1b6f-4577-9dbd-c9326e2ef95a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="IMS_DB"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<style name="Text Body"/>
+	<style name="Heading 3" fontSize="14" isBold="true"/>
+	<style name="Heading" fontSize="14"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="InvoiceNo" class="java.lang.String">
+		<defaultValueExpression><![CDATA["WES001"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[Select vwAppDetails.AppName,vwAppDetails.AppDesc,ims_manageorders.OderNumber,
+ims_manageorders.GeneratedOrderNo,
+ims_manageorders.OrderRaisedDate,
+(select ProductName from ims_productdetails where ProductCode=ims_manageorderdetails.ProductCode)  as ProductName,
+ims_manageorderdetails.OrderQuantity,
+ims_manageorderdetails.UnitPrice,
+ims_manageorderdetails.Discount,
+ims_manageorderdetails.Vat,
+ims_manageorderdetails.TotalPrice,
+ims_manageorderdetails.MarginPrecnt,
+ims_manageorderdetails.MarginAmt,
+ims_manageorderdetails.DealerPrice,
+vwdealersupplier.DealerSupplier,
+vwdealersupplier.CompanyName,
+vwdealersupplier.Companywebsite,
+vwdealersupplier.CompanyEmail,
+vwdealersupplier.OfflicePhNumber,
+vwdealersupplier.TinNumber,
+vwdealersupplier.CSTNumber,
+vwdealersupplier.ComapanyAddress,
+Ims_InvoiceMaster.InvoiceNo,
+Ims_InvoiceMaster.InvoiceDate,
+Ims_InvoiceMaster.PaymentDueDate,
+Ims_InvoiceMaster.ExpectedDelivery,
+Ims_InvoiceMaster.PaymentDueDate,
+Ims_InvoiceMaster.PaymentTerms,
+(Select GdName from  ims_genraldefinition where gdCode= Ims_InvoiceMaster.FrieghtTerms) as FrieghtTerms,
+Ims_InvoiceMaster.DeliveryTerm,
+Ims_InvoiceMaster.Destination,
+Ims_InvoiceMaster.ESugmaNo,
+Ims_InvoiceMaster.LRNoAndDate,
+Ims_InvoiceMaster.RepName,
+Ims_InvoiceMaster.Transporter,
+Ims_InvoiceMaster.TransportMode,
+Ims_InvoiceMaster.GrossWieght,
+Ims_InvoiceMaster.GrossAmount,
+Ims_InvoiceMaster.FAFCharges,
+Ims_InvoiceMaster.CSTPercentage,
+Ims_InvoiceMaster.CSTRate,
+Ims_InvoiceMaster.EducationCessPercentage,
+Ims_InvoiceMaster.EducationCessRate,
+Ims_InvoiceMaster.SecEducCessPercentage,
+Ims_InvoiceMaster.SecEducCessRate,
+Ims_InvoiceMaster.RoundOff,
+Ims_InvoiceMaster.VATTotal1,
+Ims_InvoiceMaster.VATTotal2,
+Ims_InvoiceMaster.TotalAmount
+from vwAppDetails,ims_manageorders  JOIN ims_manageorderdetails 
+ON ims_manageorders.OderNumber=ims_manageorderdetails.OrderNumber
+JOIN vwDealerSupplierDetails vwdealersupplier ON ims_manageorders.OrderRaisedBy=vwdealersupplier.DealerSupplier
+JOIN Ims_InvoiceMaster ON Ims_InvoiceMaster.OrderNo=ims_manageorders.OderNumber
+Where Ims_InvoiceMaster.InvoiceNo=$P{InvoiceNo};]]>
+	</queryString>
+	<field name="AppName" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="AppDesc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="OderNumber" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="GeneratedOrderNo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="OrderRaisedDate" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ProductName" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="OrderQuantity" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="UnitPrice" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Discount" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Vat" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TotalPrice" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MarginPrecnt" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MarginAmt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DealerPrice" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DealerSupplier" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CompanyName" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ComapanyAddress" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Companywebsite" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CompanyEmail" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="OfflicePhNumber" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TinNumber" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CSTNumber" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="InvoiceNo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="InvoiceDate" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PaymentDueDate" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ExpectedDelivery" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PaymentTerms" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="FrieghtTerms" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DeliveryTerm" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Destination" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ESugmaNo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="LRNoAndDate" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="RepName" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Transporter" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TransportMode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="GrossWieght" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="GrossAmount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="FAFCharges" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CSTPercentage" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CSTRate" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="EducationCessPercentage" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="EducationCessRate" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SecEducCessPercentage" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SecEducCessRate" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="RoundOff" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VATTotal1" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VATTotal2" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TotalAmount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="Group1"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="555" height="20" isRemoveLineWhenBlank="true" forecolor="#5AADE8" uuid="d7b7d9b0-c342-43b8-9cae-896e756289b2"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{AppName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="20" width="555" height="20" isRemoveLineWhenBlank="true" uuid="fe547640-be25-4d94-8ed7-ab7e03d3cb64"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{AppDesc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="102" y="40" width="348" height="20" isRemoveLineWhenBlank="true" forecolor="#822221" uuid="c008aa59-31ce-4ef4-9208-69739d03c883"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TAX INVOICE &  DELIVARY NOTE]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="133" splitType="Stretch">
+			<rectangle>
+				<reportElement stretchType="RelativeToBandHeight" x="288" y="0" width="265" height="129" isRemoveLineWhenBlank="true" uuid="bc5a9020-d579-4731-95f0-ac81b72c0164"/>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToBandHeight" x="1" y="0" width="287" height="129" isRemoveLineWhenBlank="true" uuid="34744656-67e5-4278-bb2a-b89049330d0e"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="6" y="0" width="206" height="20" isRemoveLineWhenBlank="true" uuid="d7a3b4be-4c18-4de0-a354-4c3698a4c9fe"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Customer Name & Address & TIN #]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="6" y="76" width="183" height="20" isRemoveLineWhenBlank="true" uuid="6e282009-668a-43dc-9082-6a58f1c31c86"/>
+				<textElement>
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Phone :"+ $F{OfflicePhNumber}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="6" y="43" width="183" height="20" isRemoveLineWhenBlank="true" uuid="86156d6f-9846-4387-a920-5c4606aa5e74"/>
+				<textElement>
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Website :" + $F{Companywebsite}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="6" y="60" width="183" height="20" isRemoveLineWhenBlank="true" uuid="483666a6-d799-4889-b213-fb1def8aad4c"/>
+				<textElement>
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Email :" + $F{CompanyEmail}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="6" y="92" width="183" height="20" isRemoveLineWhenBlank="true" uuid="310dd8c9-b552-4321-9f3e-9d72bed9de02"/>
+				<textElement>
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TIN No# " + $F{TinNumber}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Text Body" x="299" y="20" width="71" height="20" isRemoveLineWhenBlank="true" uuid="2b50fb13-bf08-4c82-81e5-35af54b7ccef"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[Invoice Date :]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="Text Body" x="370" y="0" width="94" height="20" isRemoveLineWhenBlank="true" uuid="2ac5854a-b508-4814-a794-e4dd7f41e46b"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{InvoiceNo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MMM-yyyy HH:mm:ss">
+				<reportElement style="Text Body" x="370" y="20" width="183" height="20" isRemoveLineWhenBlank="true" uuid="5e2449b5-a06c-4465-ba54-a3779445a349"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{InvoiceDate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Text Body" x="299" y="0" width="71" height="20" isRemoveLineWhenBlank="true" uuid="6ae17acf-5280-4032-abe4-382fe02adf8e"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Invoice No #]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="370" y="40" width="183" height="20" isRemoveLineWhenBlank="true" uuid="a51e899d-6144-4ae9-92f9-11acf4040d85"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RepName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="299" y="40" width="71" height="20" isRemoveLineWhenBlank="true" uuid="373f619b-d3cc-417c-a148-e1780ef199b1"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[Rep Name  :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="299" y="57" width="116" height="20" isRemoveLineWhenBlank="true" uuid="fb013f01-1900-4b57-b5b7-c07b3c42fb8d"/>
+				<textElement>
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<text><![CDATA[Payment Due Date :]]></text>
+			</staticText>
+			<textField pattern="dd MMMMM yyyy" isBlankWhenNull="true">
+				<reportElement x="415" y="56" width="138" height="20" isRemoveLineWhenBlank="true" uuid="a35ae774-0c19-4ab0-b44e-92c0353d523d"/>
+				<textElement>
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PaymentDueDate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="299" y="73" width="116" height="20" isRemoveLineWhenBlank="true" uuid="0a9de14e-6909-496c-95e0-6d6caf28efe2"/>
+				<textElement>
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<text><![CDATA[Payment Terms :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="415" y="73" width="138" height="20" isRemoveLineWhenBlank="true" uuid="9b6c714e-577b-4cae-8dcc-1c52a3be0072"/>
+				<textElement>
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PaymentTerms}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="299" y="89" width="116" height="20" isRemoveLineWhenBlank="true" uuid="d4ef6563-3e15-4724-9e93-df17a6c1853f"/>
+				<textElement>
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<text><![CDATA[Freight Terms :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="415" y="89" width="100" height="20" isRemoveLineWhenBlank="true" uuid="9ba9779a-4b78-4113-a9ff-98fff8bc7eed"/>
+				<textElement>
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FrieghtTerms}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="6" y="15" width="282" height="20" isRemoveLineWhenBlank="true" uuid="d2ae5b14-d5f1-41b9-89bb-e67a564226aa"/>
+				<textFieldExpression><![CDATA[$F{CompanyName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="6" y="109" width="183" height="20" isRemoveLineWhenBlank="true" uuid="189360b1-443f-45b0-bc88-30dd85cd71f1"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CST # " + $F{CSTNumber}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="400" y="109" width="153" height="20" isRemoveLineWhenBlank="true" uuid="1c028c84-8784-48d7-b6f4-876112913251"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Destination}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="299" y="109" width="100" height="20" isRemoveLineWhenBlank="true" uuid="133f6331-b2fa-4b79-a85a-47792a02818d"/>
+				<textElement>
+					<font size="9" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Shipping Address :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="6" y="29" width="279" height="18" uuid="710db50f-ab43-403f-9a2a-166dfceee589"/>
+				<textFieldExpression><![CDATA[$F{ComapanyAddress}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="27">
+			<staticText>
+				<reportElement x="5" y="5" width="100" height="14" uuid="8a73c526-4ec5-4c4b-a5da-ba6ab97d7d48"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ProductName]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="232" y="5" width="52" height="16" uuid="9f0106b6-29c9-46a2-aa16-c43002658a6d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qty]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="292" y="5" width="50" height="17" uuid="c0ae16ff-ea73-41a4-8f6e-8e33e7b196bd"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Disc %]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="434" y="5" width="100" height="19" uuid="7206732e-a37c-49dc-91f9-b58518655074"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="347" y="6" width="50" height="17" uuid="325e3f39-1f2a-4f55-9786-e08f4cb1ea41"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[GST %]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17">
+			<textField isBlankWhenNull="true">
+				<reportElement x="5" y="2" width="145" height="14" uuid="7b8a277c-2822-4668-9e75-3e51aecb8756"/>
+				<textFieldExpression><![CDATA[$F{ProductName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="230" y="1" width="54" height="15" uuid="04ee079e-0ca5-4dc6-91a8-8e43dd480e84"/>
+				<textFieldExpression><![CDATA[$F{OrderQuantity}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="289" y="2" width="53" height="14" uuid="709e7d38-e731-41ae-9e22-9ffac0a9c358"/>
+				<textFieldExpression><![CDATA[$F{Discount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+				<reportElement x="435" y="1" width="100" height="15" uuid="f5fbe12c-1030-42e5-9010-71f6282103b0"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{TotalPrice}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="347" y="3" width="47" height="13" uuid="e2f2bb24-fe02-4dae-9370-bed75a39c5be"/>
+				<textFieldExpression><![CDATA[$F{Vat}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="203">
+			<rectangle>
+				<reportElement stretchType="RelativeToBandHeight" x="1" y="4" width="286" height="103" isRemoveLineWhenBlank="true" uuid="08ecaec8-ba00-46f0-82e4-b5d03b68e3ee"/>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToBandHeight" x="287" y="4" width="265" height="103" isRemoveLineWhenBlank="true" uuid="c961b3b8-785e-4dff-9259-d28ab3220401"/>
+			</rectangle>
+			<textField pattern="#,##0.00#;#,##0.00#-">
+				<reportElement stretchType="RelativeToBandHeight" x="452" y="7" width="100" height="20" uuid="1e1982a8-a04e-40bb-98ec-7dbad0e34d51"/>
+				<textFieldExpression><![CDATA[$F{GrossAmount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="452" y="67" width="100" height="20" uuid="f2b92a3a-33a7-4616-a04d-68ec84a1e2c2"/>
+				<textFieldExpression><![CDATA[$F{RoundOff}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;#,##0.00#-">
+				<reportElement x="452" y="87" width="100" height="20" uuid="1f9745cf-4e4b-4227-a14a-63a1f5f0612e"/>
+				<textFieldExpression><![CDATA[$F{TotalAmount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="113" width="549" height="87" uuid="8292bf55-f52f-4b5c-bcba-ba77e3a1238b"/>
+				<textElement>
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[TERMS AND CONDITIONS: E. &amp; O. E.
+01. GOODS ONCE WE SOLD CAN NOT BE TAKEN BACK OR EXCHANGED.                                           For SHREE MANGALA HOME WORLD PRODUCTS
+02. SUBJECT TO SHIVAMOGGA JURISIDICTION.                                                                                                                 Authorized Signatory
+03. PAYMENT STRICTLY BY DD/CHEQUE ONLY.
+04. COMPANY IS NOT LIABLE FOR CASH PAID WITHOUT PROPER NOTICE. 
+05. COMPANY NOT LIABLE FOR LEAKAGE /BREAKAGE AFTER DELIVARY TO TRANSPORT AND NO GUARANTY OR WARRANTY ON SOLD MATERIAL.
+06. PAYMENT SHOULD BE MADE WITH IN 10 TO 15 DAYS AFTER RECEIVED MATERIALS AFTER NOT PAID PER MONTH 3% INTREST WILL BE CHARGED.
+07. ANY COMPLAINTS ON EXCESS / SHORT RECEIPTS MUST BE INFORMED IMMEDIATELY(WITH IN THREE DAYS)
+08. PRICES ARE SUBJECT TO CHANGE WITH OUT NOTICE, PRICES RULING AT THE TIME OF DESPATCH WILL APPLY.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="7" width="100" height="20" uuid="229d0cb7-f0d8-460e-b6ac-187b78200b5b"/>
+				<text><![CDATA[Gross Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="67" width="100" height="20" uuid="805e6f5e-075b-4e84-8f24-3c149ba008e5"/>
+				<text><![CDATA[Round Off]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="87" width="100" height="20" forecolor="#4509AD" uuid="706921d3-6036-4d6e-aaa9-27790de58cba"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Amount :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="72" width="200" height="30" uuid="52f39c6e-1b4c-483c-9aae-a80d335be337"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Material Recived Sign & Signature]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

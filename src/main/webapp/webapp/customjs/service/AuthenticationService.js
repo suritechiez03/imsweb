@@ -25,7 +25,7 @@ imsappctrl.factory('AuthenticationService',
 //                    }, 100);
 
 
-                    /* Use this for real authentication
+                    /* Use this for real authentication 
                      ----------------------------------------------*/
                     $http.post('/IMSWEB/validatelogin', data, {headers: {'Content-Type': 'application/json; charset=UTF-8'}})
                             .success(function (response) {

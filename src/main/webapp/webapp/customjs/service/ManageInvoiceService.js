@@ -51,7 +51,18 @@ imsappctrl.factory('ManageInvoiceService',
                             });
                 }
                 service.getInvoiceDetails = function (invoiceno, callback) {
-                    $http.post('/IMSWEB/getSalesInvoiceNo', invoiceno, {headers: {'Content-Type': 'text/html; charset=UTF-8'}})
+                    $http.post('/IMSWEB/getInvoicebyNo', invoiceno, {headers: {'Content-Type': 'application/json; charset=UTF-8'}})
+                            .success(function (response) {
+                                console.log("Getting Invoice Info...........................");
+                                callback(response);
+                            })
+                            .error(function (response) {
+                                console.log("Failed to recive Invoice Info...........................");
+                                callback("FAILED");
+                            });
+                };
+                service.getInvoiceList = function (invoiceno, callback) {
+                    $http.post('/IMSWEB/getInvoiceList', invoiceno, {headers: {'Content-Type': 'application/json; charset=UTF-8'}})
                             .success(function (response) {
                                 console.log("Getting Invoice Info...........................");
                                 callback(response);

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import static com.ims.imsweb.manageinventory.ImsOrderManagement.log;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 import java.util.logging.Level;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -69,11 +70,22 @@ public class ImsProcessInvoice {
             ordermodel.setGeneratedOrderNo(invoiceservice.ProcessInvoice(ordermodel, invoice, loginservice.getLoggedinUserinfo(hs.getAttribute("UserName").toString())));
 //            ordermodel.setGeneratedOrderNo(orderservice.saveOrder(ordermodel,loginservice.getLoggedinUserinfo(hs.getAttribute("UserName").toString())));
             return new ResponseEntity(ordermodel,HttpStatus.OK);
-        } catch (IOException | ParseException ex) {
+        } catch (Exception ex) {
             log.error("ProcessInvoice() --  New Order" + orderdetails);
             return new ResponseEntity<>(ordermodel,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        } 
         
+    } 
+    @RequestMapping(value = "/getInvoicebyNo", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity getInvoicebyNo(HttpServletResponse response, HttpServletRequest request,@RequestBody String InvoiceNo) {
+        log.info("Fetching Invoice Details " + InvoiceNo);
+        return new ResponseEntity<>(invoiceservice.getInvoiceDetailsByNo(InvoiceNo),HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/getInvoiceList", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<List<InvoiceModel>> getInvoiceList(HttpServletResponse response, HttpServletRequest request,@RequestBody String InvoiceNo) {
+        log.info("Fetching Invoice Details ");
+        return new ResponseEntity<>(invoiceservice.getInvoiceDetailsList(InvoiceNo),HttpStatus.OK);
     }
 
 }

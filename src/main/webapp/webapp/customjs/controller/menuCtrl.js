@@ -22,11 +22,11 @@ imsappctrl.controller('menuCtrl', function ($scope) {
         MenuItem: "Manage Authorizer",
         Link: "home.addauthorizer"
     });
-    $scope.Menu.push({
-//      face: imagePath,
-        MenuItem: "Manage Partner",
-        Link: "home.adddealer"
-    });
+//    $scope.Menu.push({
+////      face: imagePath,
+//        MenuItem: "Manage Partner",
+//        Link: "home.adddealer"
+//    });
     $scope.Menu.push({
 //      face: imagePath,
         MenuItem: "Manage Products",

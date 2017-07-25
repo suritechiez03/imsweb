@@ -129,6 +129,8 @@
     </bean>
     <bean id="InvoiceService" class="org.ims.transactionEngine.InventoryService.InvoiceService"  >
     </bean>
+    <bean id="TransactionManagement" class="org.ims.transactionEngine.InventoryService.TransactionManagementService"  >
+    </bean>
     <bean id="MiscService" class="org.ims.transactionEngine.securityManager.MiscService" >
         <property name="dataSource" ref="dataSource"></property>
     </bean>
