@@ -8,11 +8,12 @@ imsappctrl.controller('manageproductCtrl',
         ['$scope', '$timeout', '$log', '$mdMedia', 'ManageProductService','AlertService',
             function ($scope, $timeout, $log, $mdMedia, ManageProductService,AlertService) {
                 $scope.SAVE_UPDATE_DELETE_FLAG = "Save";
+                $scope.selected = [];
                 var clearproductcategory = function () {
                     $scope.ProductCategory = null;
                 };
                 var clearproduct = function () {
-                    $scope.ProductCategory = null;
+                    $scope.Product= null;
                 };
                 $scope.listproductcategory = function () {
 
@@ -30,9 +31,22 @@ imsappctrl.controller('manageproductCtrl',
                         });
                     }
                     if ($scope.SAVE_UPDATE_DELETE_FLAG === "Update") {
-
+                        
                     }
 
+                };
+                $scope.loadProducts= function(){
+                ManageProductService.getProductList(function (response) {
+                    console.log(JSON.stringify(response));
+                    $scope.productlist = response;
+                });
+                };
+                $scope.updateProduct=function(data){
+                    $scope.selectedIndex=1;
+                    $scope.listproductcategory();
+                    $scope.Product=data;
+                    $scope.SAVE_UPDATE_DELETE_FLAG="Update";
+                     
                 };
                 $scope.SaveOrUpdateProduct = function () {
                     var data = JSON.stringify($scope.Product);
@@ -43,7 +57,12 @@ imsappctrl.controller('manageproductCtrl',
                         });
                     }
                     if ($scope.SAVE_UPDATE_DELETE_FLAG === "Update") {
-
+                        ManageProductService.updateProduct(data, function (response) {
+                            AlertService.showAlert(this,"Info","Product updated Successfully","OK");
+                            clearproduct();
+                            $scope.SAVE_UPDATE_DELETE_FLAG = "Save";
+                            $scope.selectedIndex=2;
+                        });
                     }
 
                 };

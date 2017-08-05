@@ -7,26 +7,12 @@
 
 
 imsappctrl.factory('AuthenticationService',
-        ['Base64', '$http', '$cookieStore', '$rootScope', '$timeout',
-            function (Base64, $http, $cookieStore, $rootScope, $timeout) {
+        ['Base64', '$http', '$sessionStorage', '$rootScope', '$timeout',
+            function (Base64, $http, $sessionStorage, $rootScope, $timeout) {
                 var service = {};
 
                 service.Login = function (username, password, callback) {
                     var data = JSON.stringify({UserName: username, Password: password});
-
-                    /* Dummy authentication for testing, uses $timeout to simulate api call
-                     ----------------------------------------------*/
-//                    $timeout(function () {
-//                        var response = {success: username === 'test' && password === 'test'};
-//                        if (!response.success) {
-//                            response.message = 'Username or password is incorrect';
-//                        }
-//                        callback(response);
-//                    }, 100);
-
-
-                    /* Use this for real authentication 
-                     ----------------------------------------------*/
                     $http.post('/IMSWEB/validatelogin', data, {headers: {'Content-Type': 'application/json; charset=UTF-8'}})
                             .success(function (response) {
                                 console.log(response.token);
@@ -39,53 +25,64 @@ imsappctrl.factory('AuthenticationService',
 
                 };
                 service.LogOut = function (username, token, callback) {
-                   // var data = JSON.stringify({UserName: username, token: token});
-
-                    /* Dummy authentication for testing, uses $timeout to simulate api call
-                     ----------------------------------------------*/
-//                    $timeout(function () {
-//                        var response = {success: username === 'test' && password === 'test'};
-//                        if (!response.success) {
-//                            response.message = 'Username or password is incorrect';
-//                        }
-//                        callback(response);
-//                    }, 100);
-
-
-                    /* Use this for real authentication
-                     ----------------------------------------------*/
                     $http.post('/IMSWEB/logout', {headers: {'Content-Type': 'application/json; charset=UTF-8'}})
                             .success(function () {
-                               $cookieStore.remove('AppTitle');
-                               $cookieStore.remove('AppDescription');
-                               $cookieStore.remove('UserName');
-                               console.log("logging out");
-                                
+                                service.ClearCredentials();
+                                console.log("logging out");
+
                             })
                             .error(function (response) {
                                 console.log("Error while logging Out");
-                                
+
                             });
 
                 };
-                service.SetCredentials = function (username, password) {
+                service.SetCredentials = function (username, password, roles, token) {
                     var authdata = Base64.encode(username + ':' + password);
 
                     $rootScope.globals = {
                         currentUser: {
                             username: username,
-                            authdata: authdata
+                            authdata: authdata,
+                            role: roles,
+                            authtoken: token,
+                            isAuthenticated: true
                         }
                     };
 
                     $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
-                    $cookieStore.put('globals', $rootScope.globals);
+                    $sessionStorage.globals = $rootScope.globals;
                 };
+                service.userHasRole = function (roles) {
+                    console.log("inside has role")
+                    $http.post('/IMSWEB/validatesession', $rootScope.globals.currentUser.authtoken, {headers: {'Content-Type': 'application/json; charset=UTF-8'}})
+                            .success(function (response) {
+                                roles.forEach(function (item) {
+                                    // do something with `item`
+                                    if (item === $rootScope.globals.currentUser.role) {
+                                    return true;
+                                }
+                                });
 
+                            })
+                            .error(function (response) {
+                                console.log("Error while logging Out");
+                                return false;
+
+                            });
+                }
                 service.ClearCredentials = function () {
-                    $rootScope.globals = {};
-                    $cookieStore.remove('globals');
+                    $rootScope.globals = {
+                        currentUser: {
+                            username: "",
+                            authdata: "",
+                            role: "",
+                            authtoken: "",
+                            isAuthenticated: false
+                        }
+                    }
                     $http.defaults.headers.common.Authorization = 'Basic ';
+                    $sessionStorage.globals = null;
                 };
 
                 return service;

@@ -19,12 +19,13 @@ imsappctrl.controller('loginCtrl',
                         AuthenticationService.Login($scope.username, $scope.password, function (response) {
 
                             if (response.token !== '') {
-                                AuthenticationService.SetCredentials($scope.username, $scope.password);
+                                AuthenticationService.SetCredentials($scope.username, $scope.password,response.userRole,response.token);
                                 console.log(response);
                                 $location.path(response.loginparam); //log in to main page
                                 $cookieStore.put('UserName',response.UserName);
                                 $rootScope.UserName = $cookieStore.get('UserName');
-
+                                $sessionStorage.authtoken=response.token;
+                                $sessionStorage.UserName=response.UserName;
                             } else {
                                 $scope.error = response.message;
                                 //$scope.dataLoading = false;

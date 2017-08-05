@@ -24,7 +24,8 @@ imsappctrl.controller('supplierCtrl',
                             cstNumber: "",
                             panNumber: "",
                             comapanyAddress: "",
-                            offlicePhNumber: ""
+                            offlicePhNumber: "",
+                            gstNumber: ""
 
                         };
                     });

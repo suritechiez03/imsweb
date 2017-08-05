@@ -37,13 +37,13 @@
             <md-tab id="tab1" label="Products" ng-click="listproductcategory();">
                 <md-toolbar class="md-theme-light">
                     <h3 class="md-toolbar-tools">
-                        <span> Add Product </span>
+                        <span>{{ SAVE_UPDATE_DELETE_FLAG=="Save"?"Add New Product":"Update Product Info"}} </span>
                     </h3>
                 </md-toolbar>
                 <md-content class="md-padding" flex>
                     <form name="addProduct" novalidate>
                         <div layout-gt-xs="row">
-                            <md-input-container class="md-block" flex-gt-xs>
+                            <md-input-container class="md-block" flex-gt-xs >
                                 <label> Product Code : </label>
                                 <input type="text" ng-model="Product.productcode" md-maxlength="7" required ng-pattern="/^[A-Za-z0-9]{5}$/">
                             </md-input-container>
@@ -87,6 +87,10 @@
                                 <label> Color : </label>
                                 <input type="text" ng-model="Product.color" md-maxlength="45">
                             </md-input-container>
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label> HSN/SAC No : </label>
+                                <input type="text" ng-model="Product.hsnSacNo" md-maxlength="50">
+                            </md-input-container>
                         </div>
                         <div layout-gt-xs="row">
                             <md-button  class="md-raised md-primary" ng-click="SaveOrUpdateProduct();"
@@ -95,6 +99,45 @@
                     </form>
                 </md-content>
             </md-tab>
+            <md-tab id="tab3"  label="Product List" ng-click="loadProducts();">
+                        <div layout-gt-xs="row">
+                            <md-card flex>
+                                <md-table-container> 
+                                    <table md-table md-row-select multiple ng-model="selected">
+                                        <thead md-head  md-order="query.product">
+                                            <tr md-row>
+
+                                                <th md-column md-order-by="productcode">Product Code</th>
+                                                <th md-column md-order-by="productname">Product Name</th>
+                                                <th md-column md-order-by="specificationandthickness">Specification</th>
+                                                <th md-column md-order-by="productcategorycode">Category Code</th>   
+                                                <th md-column md-order-by="size">Size</th>   
+                                                <th md-column md-order-by="units">units</th>  
+                                                <th md-column md-order-by="moq">MOQ</th>   
+                                                <th md-column md-order-by="color">Color</th>   
+                                                <th md-column md-order-by="HsnSacNo">HSN/SAC</th>   
+                                                <th md-column ></th> 
+                                            </tr>
+                                        </thead> 
+                                        <tbody md-body>
+                                            <tr md-row ng-repeat="item in productlist| filter: filter.search | orderBy: query.product">
+                                                <td md-cell>{{item.productcode}}</td>
+                                                <td md-cell>{{item.productname}}</td>
+                                                <td md-cell>{{item.specificationandthickness}}</td>
+                                                <td md-cell>{{item.productcategorycode}}</td>
+                                                <td md-cell>{{item.size}}</td>
+                                                <td md-cell>{{item.units}}</td>
+                                                <td md-cell>{{item.moq}}</td>
+                                                <td md-cell>{{item.color}}</td>
+                                                <td md-cell>{{item.hsnSacNo}}</td>                                                
+                                        <td md-cell><md-button class="md-raised md-primary"  ng-click="updateProduct(item);" >EDIT</md-button></td>
+
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                            </md-card>
+                        </div>
+                    </md-tab>
         </md-tabs>
     </md-content>
 </div>

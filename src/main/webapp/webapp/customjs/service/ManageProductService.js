@@ -55,11 +55,11 @@ imsappctrl.factory('ManageProductService',
                 service.updateProduct = function (data, callback) {
                     $http.post('/IMSWEB/updateProduct', data, {headers: {'Content-Type': 'application/json; charset=UTF-8'}})
                             .success(function (response) {
-                                console.log("product category update successfully...........................");
+                                console.log("product update successfully...........................");
                                 callback("OK");
                             })
                             .error(function (response) {
-                                console.log("product category update unsuccessfully...........................");
+                                console.log("product update unsuccessfully...........................");
                                 AlertService.showAlert(this, "Info", "Unable Update Product details", "OK");
                             });
                 };

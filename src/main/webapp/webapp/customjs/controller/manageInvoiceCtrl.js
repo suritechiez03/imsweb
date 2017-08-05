@@ -186,7 +186,7 @@ imsappctrl.controller('manageInvoicesCtrl',
 
 
 //                    grossamt = $scope.fixedto4digit((grossamt + $scope.ManageInvoice.FAFcharges));
-//                    $scope.ManageInvoice.GrossAmount = $scope.fixedto4digit(grossamt);
+                      $scope.ManageInvoice.GrossAmount = $scope.fixedto4digit(grossamt);
 //                    $scope.ManageInvoice.excessRate = $scope.fixedto4digit((grossamt * $scope.ManageInvoice.excessPercentage) / 100);
 //                    $scope.ManageInvoice.CSTRate = $scope.fixedto4digit((grossamt * $scope.ManageInvoice.CSTPercentage) / 100);
 //                    $scope.ManageInvoice.educationCessRate = $scope.fixedto4digit((grossamt * $scope.ManageInvoice.educationCessPercentage) / 100);
@@ -199,7 +199,7 @@ imsappctrl.controller('manageInvoicesCtrl',
                     $scope.ManageInvoice.FinalAmount = $scope.fixedto2digit(Math.floor(parseFloat(roundoff)));
 
                     //angular.element(document.getElementById( 'tblCharges' ) ).html(DynamicTbl);
-                }
+                };
                 $scope.Remove = function (productIndex) {
                     $scope.selectedproductlist.splice(productIndex, 1);
                     $scope.CalcuateCharges();

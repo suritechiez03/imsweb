@@ -62,6 +62,7 @@ public class ImsSecurityService {
 //        objm.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             Userlogin = objm.readValue(Param, LoginModel.class);
             if (loginservice.isUserExisits(Userlogin.getUserName(), Userlogin.getPassword())) {
+                Userlogin.setUserRole(loginservice.getLoggedinUserinfo(Userlogin.getUserName()).getImsEmployee().getImsGrouprights().getGroupRights());
                 hs.setAttribute("UserName", Userlogin.getUserName());
                 hs.setAttribute("token", hs.getId());
                 hs.setMaxInactiveInterval(500);
@@ -74,6 +75,24 @@ public class ImsSecurityService {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(Userlogin, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/validatesession", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity validateSession(HttpServletRequest request, HttpServletResponse response, @RequestBody String Param) {
+        try {
+            HttpSession hs = request.getSession();
+//        objm.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            if(hs!=null && hs.getAttribute("token")!=null){
+            if (hs.getAttribute("token").toString().equals(Param)) {
+                return new ResponseEntity<>("", HttpStatus.OK);
+            }
+            }
+
+        } catch (Exception e) {
+            log.error("validateSession(HttpServletRequest request, HttpServletResponse response, @RequestBody String Param)  :" + e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST, produces = "application/json")

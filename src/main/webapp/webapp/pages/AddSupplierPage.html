@@ -44,7 +44,10 @@
                                         <label>CST Number :</label>
                                         <input ng-model="Supplier.cstNumber" required>
                                     </md-input-container>
-
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label>GST Number :</label>
+                                        <input ng-model="Supplier.gstNumber" required>
+                                    </md-input-container>
                                     <md-input-container class="md-block" flex-gt-sm>
                                         <label>PAN Number :</label>
                                         <input ng-model="Supplier.panNumber" required>
@@ -104,6 +107,7 @@
                                             <span class="md-headline">Supplier Number : {{ item.supplierNumber}}</span>
                                             <span class="md-subhead"> Company Name : {{ item.companyName}}</span>
                                             <span class="md-subhead"> Company Website : {{item.companyWebsite}}</span>
+                                            <span class="md-subhead"> GST Number : {{item.gstNumber}}</span>
                                         </md-card-title-text>
                                     </md-card-title>
                                     <md-card-actions layout="row" layout-align="end center">

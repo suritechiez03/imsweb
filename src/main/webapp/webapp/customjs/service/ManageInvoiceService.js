@@ -34,7 +34,7 @@ imsappctrl.factory('ManageInvoiceService',
                 };
                 service.getSalesPDF = function (invoice) {
 
-                    $http.get('/IMSWEB/IMS_ReportService?OPETYPE=5&InvoiceNo=' + invoice.InvoiceNo + '&filename=RptSalesInvoice', {responseType: 'arraybuffer'})
+                    $http.get('/IMSWEB/IMS_ReportService?OPETYPE=5&InvoiceNo=' + invoice.InvoiceNo + '&filename=RptTaxInvoice_GST', {responseType: 'arraybuffer'})
                             .success(function (data) {
                                 var file = new Blob([data], {type: 'application/pdf'});
                                 var fileURL = URL.createObjectURL(file);
@@ -43,7 +43,7 @@ imsappctrl.factory('ManageInvoiceService',
                 }
                 service.getPurchasePDF = function (invoice) {
 
-                    $http.get('/IMSWEB/IMS_ReportService?OPETYPE=5&InvoiceNo=' + invoice.InvoiceNo + '&filename=RptTaxInvoice', {responseType: 'arraybuffer'})
+                    $http.get('/IMSWEB/IMS_ReportService?OPETYPE=5&InvoiceNo=' + invoice.InvoiceNo + '&filename=RptTaxInvoice_GST', {responseType: 'arraybuffer'})
                             .success(function (data) {
                                 var file = new Blob([data], {type: 'application/pdf'});
                                 var fileURL = URL.createObjectURL(file);

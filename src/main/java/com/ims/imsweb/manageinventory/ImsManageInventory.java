@@ -142,6 +142,31 @@ public class ImsManageInventory {
         }
 
     } 
+      @RequestMapping(value = "/updateProduct", method = RequestMethod.POST, produces = "text/html")
+    public ResponseEntity<String> updateProduct(HttpServletRequest request, HttpServletResponse response, @RequestBody String productinfo) {
+        log.info("updateProduct() -- Update Product" + productinfo);
+        ProductModel productModel = new ProductModel();
+        ObjectMapper objm = new ObjectMapper();
+        HttpSession hs = request.getSession();
+        try {
+            objm.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            productModel = objm.readValue(productinfo, ProductModel.class);
+            
+            productModel.setEnteredDate(ApplicationUtil.getDate());
+            if (productservice.updateProduct(productModel, loginservice.getLoggedinUserinfo(hs.getAttribute("UserName").toString()))) {
+                log.info("updateProduct() -- update product " + productModel.getProductcode());
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                log.info("updateProduct() -- Failed to update product " + productModel.getProductcode());
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+        } catch (Exception e) {
+            log.error("updateProduct()" + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    } 
     
     @RequestMapping(value = "/getProductList", method = RequestMethod.GET)
     public ResponseEntity<List<ProductModel>> getProductList(HttpServletRequest request, HttpServletResponse response) {
